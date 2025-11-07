@@ -19,7 +19,14 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./app/*"],
+      "@public/*": ["./public/*"],
+//      "@app/*": ["./app/*"],
+      "@components/*": ["./components/*"],
+      "@lib/*": ["./lib/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@styles/*": ["./styles/*"],
+      "@assets/*": ["./public/assets/*"]
     }
   },
   "include": [
