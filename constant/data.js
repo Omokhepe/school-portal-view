@@ -10,3 +10,8 @@ export const navLinks = [
   { href: "/admission", label: "Admission" },
   { href: "/login", label: "E-Portal" },
 ];
+
+export const sideNavLinks = [
+  { href: "/admin-dashboard/overview", label: "Overview" },
+  { href: "/admin-dashboard/user", label: "User" },
+];

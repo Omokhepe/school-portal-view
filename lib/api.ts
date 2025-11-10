@@ -1,20 +1,26 @@
 import axios from "axios";
-import { useAuthStore } from "../store/authStore";
+import { toast } from "sonner";
+// import Router from "next/router";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+// const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  withCredentials: true,
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const status = error?.response?.status;
+    if (status === 401) {
+      if (typeof window !== "undefined") {
+        toast.error("Session expired. Please Log in Again");
+        window.location.href = "/login";
+      }
+    }
+    return Promise.reject(error);
+  },
+);
 
 export default api;
-
-axios.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().token;
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  return config;
-});
