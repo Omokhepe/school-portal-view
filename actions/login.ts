@@ -3,22 +3,19 @@
 import { cookies } from "next/headers";
 import api from "@lib/api";
 import { toast } from "sonner";
+import { useAuthStore } from "../store/authStore";
+import type { LoginResponse } from "../types/auth";
+import { redirect } from "next/navigation";
 
-export async function login(data: { email: string; password: string }) {
-  try {
-    const response = await api.post("/login", data);
-
-    const { token, user, must_change_password } = response.data;
-
-    (await cookies()).set("auth_Token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "strict",
-      path: "/",
-    });
-    toast.success("Login Successful!");
-    return { user, must_change_password };
-  } catch (err: any) {
-    throw new Error(err.response?.data?.message || "Login failed");
-  }
-}
+// export async function login(email: string, password: string) {
+//   // try {
+//   const res = await api.post<LoginResponse>("/login", { email, password });
+//   const data = res.data;
+//   console.log(data);
+//
+//   return data;
+//   // } catch (err: any) {
+//   //   console.log(err, "err msg");
+//   //   throw new Error(err.response?.data?.message || "Login failed");
+//   // }
+// }

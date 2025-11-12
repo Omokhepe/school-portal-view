@@ -1,36 +1,27 @@
+"use client";
+
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
+import { User } from "../types/auth";
 
 interface AuthState {
-  // token: string | null;
+  token: string | null;
   user: User | null;
-  setUser: (user: User) => void;
+  login: (data: any) => void;
   logout: () => void;
-  // must_change_password: number;
-}
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  // email_verified_at?: any;
-  role: string;
-  must_change_password: number;
-  class_id: number;
-  created_at: string;
-  updated_at: string;
+  // hasRole: (roles: string[]) => boolean;
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
-      // token: null,
+      token: null,
       user: null,
 
-      setUser: (user) => set({ user }),
+      login: (data) => set({ token: data.token, user: data.user }),
 
-      logout: () => set({ user: null }),
+      logout: () => set({ token: null, user: null }),
     }),
-    { name: "auth-storage" },
+    { name: "auth-store", storage: createJSONStorage(() => localStorage) },
   ),
 );

@@ -2,10 +2,11 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { login } from "../../actions/login";
-import { useAuthStore } from "../../store/authStore";
+import { useAuthStore } from "@store/authStore";
 import loginImage from "@assets/images/loginImg.png";
 import { Input } from "@/components/ui/input";
+import api from "@lib/api";
+import { LoginResponse } from "../../types/auth";
 
 enum userData {
   ChangePassword = 1,
@@ -15,29 +16,36 @@ enum userData {
 }
 
 const LoginPage = () => {
+  const router = useRouter();
+  const login = useAuthStore((s) => s.login);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const setUser = useAuthStore((s) => s.setUser);
-  const router = useRouter();
-
-  // const user = useAuthStore((state) => state.user);
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(email, password);
-    const result = await login({ email, password });
+    setLoading(true);
+    try {
+      const res = await api.post<LoginResponse>("/login", { email, password });
+      const { user, token, must_change_password } = res.data;
 
-    console.log(result, "set result", setUser);
+      login({ user: user, token: token });
 
-    setUser(result.user);
-    if (result.must_change_password === userData.ChangePassword) {
-      router.push("/change-password");
-    } else {
-      if (result.user.role === userData.admin) {
-        router.push("/admin-dashboard");
+      if (must_change_password === userData.ChangePassword) {
+        router.push("/change-password");
+        return;
       } else {
-        router.push("/e-portal");
+        setTimeout(() => {
+          router.push("/admin-dashboard/overview");
+        }, 100);
+        // router.push("/admin-dashboard/overview");
       }
+    } catch (err: any) {
+      console.log(err, "note err");
+      alert(err.response?.data?.message ?? "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -76,32 +84,10 @@ const LoginPage = () => {
             type="submit"
             className="bg-yellow-900 w-70 h-12 rounded-sm hover: text-white"
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
       </div>
-
-      {/*<div className="h-full flex items-center justify-center bg-black/40">*/}
-      {/*  <div className="max-w-screen-xl px-20">*/}
-      {/*    <h1 className="text-5xl font-extrabold text-off-white mb-4">*/}
-      {/*      Welcome to Zoe Seed Schools*/}
-      {/*    </h1>*/}
-      {/*    <p className="text-lg text-amber-50 mb-8">*/}
-      {/*      Empowering students with knowledge, character, and excellence.*/}
-      {/*    </p>*/}
-      {/*    <div>*/}
-      {/*      <button className="px-6 py-3 text-white outline-2 outline-offset-2 outline-blue-700 hover:bg-blue-700 hover:outline-0 rounded-lg font-medium mr-7">*/}
-      {/*        Enroll Now*/}
-      {/*      </button>*/}
-      {/*      <button className="px-6 py-3 text-white outline-2 outline-offset-2 outline-blue-700 hover:bg-blue-700 hover:outline-0 rounded-lg font-medium mr-7">*/}
-      {/*        Learn More*/}
-      {/*      </button>*/}
-      {/*      <button className="px-6 py-3 text-white outline-2 outline-offset-2 outline-blue-700 hover:bg-blue-700 hover:outline-0 rounded-lg font-medium">*/}
-      {/*        Take A virtual Tour*/}
-      {/*      </button>*/}
-      {/*    </div>*/}
-      {/*  </div>*/}
-      {/*</div>*/}
     </section>
   );
 };

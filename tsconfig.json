@@ -21,12 +21,13 @@
     "paths": {
       "@/*": ["./app/*"],
       "@public/*": ["./public/*"],
-      "@action/*": ["./action/*"],
+      "@actions/*": ["./actions/*"],
       "@components/*": ["./components/*"],
       "@lib/*": ["./lib/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@styles/*": ["./styles/*"],
-      "@assets/*": ["./public/assets/*"]
+      "@assets/*": ["./public/assets/*"],
+      "@store/*": ["./store/*"]
     }
   },
   "include": [

@@ -1,11 +1,18 @@
 import React from "react";
 import { sideNavLinks } from "../constant/data";
 import Link from "next/link";
-import loginImage from "@assets/images/loginImg.png";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuthStore } from "@store/authStore";
 
 const Sidenav = () => {
   const pathname = usePathname();
+  const router = useRouter();
+  const logout = useAuthStore((s) => s.logout);
+
+  const handleLogout = () => {
+    logout();
+    router.push("/login");
+  };
 
   return (
     <div className="bg-greyGreen w-72 py-5 flex flex-col rounded-r-lg shadow-md transition-all duration-300">
@@ -26,6 +33,7 @@ const Sidenav = () => {
           })}
         </nav>
       </aside>
+      <h3 onClick={() => handleLogout()}>Logout</h3>
     </div>
   );
 };
