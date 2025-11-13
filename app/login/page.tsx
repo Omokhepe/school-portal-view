@@ -26,8 +26,14 @@ const LoginPage = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    const userEmail = email.toLowerCase();
+    // console.log(userEmail, password);
     try {
-      const res = await api.post<LoginResponse>("/login", { email, password });
+      const res = await api.post<LoginResponse>("/login", {
+        email: userEmail,
+        password,
+      });
+
       const { user, token, must_change_password } = res.data;
 
       login({ user: user, token: token });
@@ -59,7 +65,7 @@ const LoginPage = () => {
       <div className="w-1/2 h-full flex items-center justify-center lg:w-1/2">
         <form
           onSubmit={handleLogin}
-          className="flex items-center flex-col w-2/3 py-10 bg-green-800 shadow-2xl rounded-sm"
+          className="flex items-center flex-col w-2/3 py-10 bg-greyGreen shadow-2xl rounded-sm"
         >
           <div className="w-full px-10 py-5 font-bold">
             <label htmlFor="email">Email Address: </label>

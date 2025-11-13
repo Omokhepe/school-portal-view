@@ -44,6 +44,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
     --color-greyGreen : #587b5b;
+    --color-off-white: #F1F1F1;
 }
 
 :root {
@@ -122,4 +123,7 @@
   body {
     @apply bg-background text-foreground;
   }
+    .card_wrap{
+        @apply bg-white my-5 p-4 rounded-lg font-manrope shadow-sm hover:shadow-xl transition-shadow duration-300
+    }
 }

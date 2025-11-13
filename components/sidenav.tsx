@@ -15,7 +15,7 @@ const Sidenav = () => {
   };
 
   return (
-    <div className="bg-greyGreen w-72 py-5 flex flex-col rounded-r-lg shadow-md transition-all duration-300">
+    <div className="w-72 bg-greyGreen py-5 flex flex-col rounded-r-lg shadow-md transition-all fixed duration-300 h-full ">
       <h2 className="p-3 font-manrope font-bold text-2xl">Admin View</h2>
       <aside>
         <nav>
