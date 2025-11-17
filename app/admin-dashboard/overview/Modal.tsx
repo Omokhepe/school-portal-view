@@ -18,7 +18,7 @@ import {
 type DialogFormProps = {
   title?: string;
   fullName?: string;
-  emailText?: string;
+  userText?: string;
   children?: React.ReactNode;
   onSave: (value: any) => void;
   open: boolean;
@@ -31,7 +31,7 @@ type DialogFormProps = {
 export default function DialogForm({
   title = "Add New",
   fullName,
-  emailText,
+  userText,
   children,
   onSave,
   open,
@@ -43,8 +43,8 @@ export default function DialogForm({
   const [studentClass, setStudentClass] = useState("");
   const [role, setRole] = useState("");
   const [inputName, setInputName] = useState("");
-  const [inputEmail, setInputEmail] = useState("");
-  const { classes } = dataClass;
+  const [inputUsername, setInputUsername] = useState("");
+  const classes = dataClass;
 
   const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -75,15 +75,15 @@ export default function DialogForm({
           </div>
 
           <div className="grid gap-2 grid-cols-[100px_1fr] items-center">
-            <label htmlFor="amount">{emailText}</label>
+            <label htmlFor="username">{userText}</label>
             <Input
-              id="amount"
+              id="usename"
               // type="number"
               required
-              value={inputEmail}
+              value={inputUsername}
               onChange={(e) => {
-                setInputEmail(e.target.value);
-                setFormData({ ...formData, inputEmail: e.target.value });
+                setInputUsername(e.target.value);
+                setFormData({ ...formData, inputUsername: e.target.value });
               }}
             />
           </div>

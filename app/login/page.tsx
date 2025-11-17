@@ -19,18 +19,17 @@ const LoginPage = () => {
   const router = useRouter();
   const login = useAuthStore((s) => s.login);
 
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const userEmail = email.toLowerCase();
-    // console.log(userEmail, password);
+
     try {
       const res = await api.post<LoginResponse>("/login", {
-        email: userEmail,
+        username: username.toLowerCase(),
         password,
       });
 
@@ -68,11 +67,11 @@ const LoginPage = () => {
           className="flex items-center flex-col w-2/3 py-10 bg-greyGreen shadow-2xl rounded-sm"
         >
           <div className="w-full px-10 py-5 font-bold">
-            <label htmlFor="email">Email Address: </label>
+            <label htmlFor="username">Username: </label>
             <Input
               type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               placeholder="Email"
               // className="gap-4"
             />

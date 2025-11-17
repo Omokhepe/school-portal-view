@@ -1,0 +1,76 @@
+"use client";
+
+import React, { useState } from "react";
+import { addUser } from "@actions/user";
+import { useAuthStore } from "@store/authStore";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import DialogForm from "@/admin-dashboard/overview/Modal";
+import { useClassStore } from "@store/studentStore";
+import { useClasses } from "../../../hooks/useData";
+
+const AddUser = () => {
+  const token = useAuthStore((s) => s.token);
+  const { data: classes } = useClasses();
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState();
+  const [formData, setFormData] = useState({
+    inputName: "",
+    inputUsername: "",
+    role: "",
+    studentClass: "",
+  });
+
+  const handleFormSubmit = async () => {
+    try {
+      const payload = {
+        name: formData.inputName.trim(),
+        username: formData.inputUsername,
+        role: formData.role,
+        ...(formData.role === "student" && { class_id: formData.studentClass }),
+      };
+      console.log(payload, "checking Payload");
+      const res = await addUser(token, payload);
+
+      console.log(res, "response");
+      toast.success("User created successfully.");
+    } catch (err: any) {
+      toast.error(`Error creating user: ${err.message} - ${err.message.Error}`);
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  console.log({ classes }, "classes hahahaha");
+
+  return (
+    <>
+      <div>
+        <Button
+          variant="secondary"
+          className="bg-yellow-900 text-off-white hover:bg-grey900 hover:text-beige100 h-12 hover:bg-yellow-700"
+          onClick={() => setOpen(true)}
+        >
+          <Plus />
+          Click to Add New User
+        </Button>
+
+        {/* Reusable dialog */}
+        <DialogForm
+          open={open}
+          setOpen={setOpen}
+          title="Add New User"
+          onSave={handleFormSubmit}
+          fullName="Full Name"
+          userText="User Name"
+          dataClass={classes}
+          formData={formData}
+          setFormData={setFormData}
+        />
+      </div>
+    </>
+  );
+};
+
+export default AddUser;

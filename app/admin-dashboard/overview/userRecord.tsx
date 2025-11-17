@@ -25,10 +25,15 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import { useClasses, useUsers } from "../../../hooks/useData";
+import { useAuthStore } from "@store/authStore";
 
 // 1. Define columns for transaction table
 
-const UserRecord = ({ data, dataClass }) => {
+const UserRecord = () => {
+  const token = useAuthStore((s) => s.token);
+  const { classes } = useClasses(token);
+  const { users } = useUsers(token);
   const [globalFilter, setGlobalFilter] = useState("");
   const searchParams = useSearchParams();
   const filterCategory = searchParams.get("category");
@@ -37,35 +42,55 @@ const UserRecord = ({ data, dataClass }) => {
   );
   const [sortBy, setSortBy] = React.useState("latest");
 
-  // // ✅ only runs when data is ready
-  const userData = useMemo(() => data || [], [data]);
+  console.log(users, "userRecord");
 
-  console.log(dataClass.classes, "checking classes props");
+  // // ✅ only runs when data is ready
+  const userData = useMemo(() => users || [], [users]);
+
+  console.log(classes, "checking classes props");
 
   const classMap = useMemo(() => {
     const map: Record<number, string> = {};
 
-    if (!dataClass?.classes) return map;
+    if (!classes) return map;
 
     // Flatten all class arrays from different levels
-    Object.values(dataClass.classes)
+    Object.values(classes)
       .flat()
       .forEach((cls: any) => {
         map[cls.id] = cls.name; // or cls.text depending on API
       });
 
     return map;
-  }, [dataClass]);
+  }, [classes]);
+  const handleEdit = (user) => {
+    console.log(user);
+  };
+  const handleDelete = (id) => {
+    console.log(id);
+  };
 
   const columns = useMemo(
     () => [
+      {
+        accessorKey: "user_id",
+        header: "Student ID",
+      },
       {
         accessorKey: "name",
         header: "Name",
       },
       {
+        accessorKey: "username",
+        header: "User Name",
+      },
+      {
         accessorKey: "role",
         header: "Role",
+        cell: ({ row }) => {
+          const role = row.original.role;
+          return <span>{role.toUpperCase()}</span>;
+        },
       },
       {
         accessorKey: "created_at",
@@ -94,6 +119,31 @@ const UserRecord = ({ data, dataClass }) => {
                 ? classMap[classId]
                 : "Teacher"}
             </span>
+          );
+        },
+      },
+      {
+        header: "Actions",
+        id: "actions", // custom column (no accessor)
+        cell: ({ row }) => {
+          const user = row.original; // full row data
+
+          return (
+            <div className="flex gap-2">
+              <button
+                onClick={() => handleEdit(user)}
+                className="px-2 py-1 text-sm bg-yellow-900 w-15 text-off-white rounded hover:bg-yellow-700"
+              >
+                Edit
+              </button>
+
+              <button
+                onClick={() => handleDelete(user.id)}
+                className="px-2 py-1 text-sm text-red-600 border border-red-600 rounded hover:bg-red-50"
+              >
+                Delete
+              </button>
+            </div>
           );
         },
       },

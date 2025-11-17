@@ -1,8 +1,19 @@
-"use server";
-import { cookies } from "next/headers";
+import { useAuthStore } from "@store/authStore";
+import useAppStore from "@store/appStore";
+import { useRouter } from "next/navigation";
+import { mutate as globalMutate } from "swr";
 
-export async function logout() {
-  (await cookies()).delete("auth_Token");
+export function useLogout() {
+  const clearAuth = useAuthStore((s) => s.logout);
+  const clearApp = useAppStore((s) => s.clearAll);
+  const router = useRouter();
 
-  window.location.href = "/login";
+  return () => {
+    clearAuth();
+    clearApp();
+    // clear SWR cache
+    globalMutate(() => true, undefined, { revalidate: false });
+    // remove any leftover cookies etc
+    router.push("/login");
+  };
 }

@@ -2,69 +2,79 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import adminBG from "@assets/images/adminBG.png";
-import UserOverview from "@components/userOverview";
+import UserOverview from "@/admin-dashboard/overview/userOverview";
 import Protected from "@components/Protected";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@store/authStore";
-import AddUser from "@components/addUser";
-import UserRecord from "@components/userRecord";
+import AddUser from "@/admin-dashboard/overview/addUser";
+import UserRecord from "@/admin-dashboard/overview/userRecord";
 import { getAllUsers, getClasses } from "@actions/user";
 import { router } from "next/client";
+import { Toaster } from "@/components/ui/sonner";
+import { useClassStore } from "@store/studentStore";
 
 const Page = () => {
   const router = useRouter();
   const { token, hydrated, user } = useAuthStore();
+  // const classes = useClassStore((s) => s.setClasses);
 
-  const [data, setData] = useState([]);
-  const [dataClass, setDataClass] = useState<any>([]);
+  // const [data, setData] = useState([]);
+  // const [dataClass, setDataClass] = useState<any>([]);
 
-  const getAllUser = async () => {
-    try {
-      const [resUser, resClass] = await Promise.all([
-        getAllUsers(token),
-        getClasses(token),
-      ]);
-      setData(resUser);
-      setDataClass(resClass);
-      console.log({ data, dataClass }, "all data");
-    } catch (err: any) {
-      if (err.message === "unauthorized") {
-        localStorage.removeItem("token");
-        router.push("/login");
-      }
-      console.log(err);
-    }
-  };
+  // const getAllUser = async () => {
+  //   try {
+  //     const [resUser, resClass] = await Promise.all([
+  //       getAllUsers(token),
+  //       getClasses(token),
+  //     ]);
+  //     setData(resUser);
+  //     setDataClass(resClass);
+  //     classes(resClass);
+  //     console.log({ data, dataClass }, "all data");
+  //   } catch (err: any) {
+  //     if (err.message === "unauthorized") {
+  //       localStorage.removeItem("token");
+  //       router.push("/login");
+  //     }
+  //     console.log(err);
+  //   }
+  // };
 
   useEffect(() => {
-    // if (!hydrated) return;
-    // if (!token) router.replace("/login");
+    if (!hydrated) return;
+    if (!token) router.replace("/login");
 
-    getAllUser();
+    // getAllUser();
     // userClasses();
   }, [token, hydrated]);
 
   if (!hydrated) return null;
 
   // const userInfo = user();
-  console.log(token, hydrated, user, data, dataClass);
+  // console.log(token, hydrated, user, data, dataClass, "here here there");
   return (
     <Protected roles={["admin"]}>
       <div
-        className="flex-1 overflow-y-auto ml-64 pl-15 pr-8 pt-10"
+        className="flex-1 h-screen overflow-y-auto ml-64 pl-15 pr-8 pt-10"
         // className='relative h-full bg-fixed bg-center bg-cover w-full p-8'
         style={{ backgroundImage: `url(${adminBG.src})` }}
       >
+        <Toaster richColors />
         <h2 className="font-bold text-3xl">Overview {user?.name}</h2>
-        {data && dataClass ? (
-          <>
-            <AddUser dataClass={dataClass || []} />
-            {/*<UserOverview />*/}
-            <UserRecord data={data || []} dataClass={dataClass} />
-          </>
-        ) : (
-          <p>Loading</p>
-        )}
+        {/*{data && dataClass ? (*/}
+        <>
+          <AddUser />
+          {/*<UserOverview />*/}
+          <UserRecord />
+        </>
+        {/*<>*/}
+        {/*    <AddUser dataClass={dataClass || []} />*/}
+        {/*    /!*<UserOverview />*!/*/}
+        {/*    <UserRecord data={data || []} dataClass={dataClass} />*/}
+        {/*  </>*/}
+        {/*// ) : (*/}
+        {/*//   <p>Loading</p>*/}
+        {/*// )}*/}
       </div>
     </Protected>
   );
