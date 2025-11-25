@@ -7,14 +7,12 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import DialogForm from "@/admin-dashboard/overview/Modal";
-import { useClassStore } from "@store/studentStore";
-import { useClasses } from "../../../hooks/useData";
+import { refreshResources, useClasses } from "../../../hooks/useData";
 
 const AddUser = () => {
-  const token = useAuthStore((s) => s.token);
-  const { data: classes } = useClasses();
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState();
+  const token: string | null = useAuthStore((s) => s.token);
+  const classes = useClasses(token);
+  const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     inputName: "",
     inputUsername: "",
@@ -30,16 +28,18 @@ const AddUser = () => {
         role: formData.role,
         ...(formData.role === "student" && { class_id: formData.studentClass }),
       };
-      console.log(payload, "checking Payload");
+
       const res = await addUser(token, payload);
 
-      console.log(res, "response");
+      //this reloads api to get new data after user is saved
+      await refreshResources(["users", "students", "teachers"], token);
+
       toast.success("User created successfully.");
     } catch (err: any) {
       toast.error(`Error creating user: ${err.message} - ${err.message.Error}`);
       console.log(err);
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
   console.log({ classes }, "classes hahahaha");

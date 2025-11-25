@@ -1,57 +1,29 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect } from "react";
 import adminBG from "@assets/images/adminBG.png";
-import UserOverview from "@/admin-dashboard/overview/userOverview";
 import Protected from "@components/Protected";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@store/authStore";
 import AddUser from "@/admin-dashboard/overview/addUser";
 import UserRecord from "@/admin-dashboard/overview/userRecord";
-import { getAllUsers, getClasses } from "@actions/user";
-import { router } from "next/client";
 import { Toaster } from "@/components/ui/sonner";
-import { useClassStore } from "@store/studentStore";
+import { useStudents, useTeachers } from "../../../hooks/useData";
+import UserOverview from "@/admin-dashboard/overview/userOverview";
 
 const Page = () => {
   const router = useRouter();
   const { token, hydrated, user } = useAuthStore();
-  // const classes = useClassStore((s) => s.setClasses);
-
-  // const [data, setData] = useState([]);
-  // const [dataClass, setDataClass] = useState<any>([]);
-
-  // const getAllUser = async () => {
-  //   try {
-  //     const [resUser, resClass] = await Promise.all([
-  //       getAllUsers(token),
-  //       getClasses(token),
-  //     ]);
-  //     setData(resUser);
-  //     setDataClass(resClass);
-  //     classes(resClass);
-  //     console.log({ data, dataClass }, "all data");
-  //   } catch (err: any) {
-  //     if (err.message === "unauthorized") {
-  //       localStorage.removeItem("token");
-  //       router.push("/login");
-  //     }
-  //     console.log(err);
-  //   }
-  // };
+  const { data: teachers } = useTeachers(token);
+  const { data: students } = useStudents(token);
 
   useEffect(() => {
     if (!hydrated) return;
     if (!token) router.replace("/login");
-
-    // getAllUser();
-    // userClasses();
   }, [token, hydrated]);
 
   if (!hydrated) return null;
 
-  // const userInfo = user();
-  // console.log(token, hydrated, user, data, dataClass, "here here there");
   return (
     <Protected roles={["admin"]}>
       <div
@@ -64,17 +36,12 @@ const Page = () => {
         {/*{data && dataClass ? (*/}
         <>
           <AddUser />
-          {/*<UserOverview />*/}
-          <UserRecord />
+          <div className="flex gap-16">
+            <UserRecord users={students} role={"student"} />
+            <UserOverview />
+          </div>
+          <UserRecord users={teachers} />
         </>
-        {/*<>*/}
-        {/*    <AddUser dataClass={dataClass || []} />*/}
-        {/*    /!*<UserOverview />*!/*/}
-        {/*    <UserRecord data={data || []} dataClass={dataClass} />*/}
-        {/*  </>*/}
-        {/*// ) : (*/}
-        {/*//   <p>Loading</p>*/}
-        {/*// )}*/}
       </div>
     </Protected>
   );

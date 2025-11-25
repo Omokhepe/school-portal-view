@@ -46,3 +46,28 @@ export async function apiFetch<T = any>(path: string, token: string | null) {
     throw err;
   }
 }
+
+// Group classes by their level
+export const groupClassesByLevel = (classes) => {
+  const allClasses = [
+    ...classes.creche,
+    ...classes.primary,
+    ...classes.secondary,
+  ];
+  return allClasses.reduce((acc, cls) => {
+    if (!acc[cls.level]) acc[cls.level] = [];
+    acc[cls.level].push(cls);
+    return acc;
+  }, {});
+};
+
+// Count students in a specific class
+export const getClassStudentCount = (students, classId) => {
+  return students.filter((s) => s.class_id === classId).length;
+};
+
+// Count students in an entire level (sum of all classes inside)
+export const getLevelStudentCount = (students, grouped, level) => {
+  const classIds = grouped[level].map((c) => c.id);
+  return students.filter((s) => classIds.includes(s.class_id)).length;
+};

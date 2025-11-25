@@ -7,6 +7,8 @@ import loginImage from "@assets/images/loginImg.png";
 import { Input } from "@/components/ui/input";
 import api from "@lib/api";
 import { LoginResponse } from "../../types/auth";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 enum userData {
   ChangePassword = 1,
@@ -37,6 +39,8 @@ const LoginPage = () => {
 
       login({ user: user, token: token });
 
+      toast.success("Login Successful");
+
       if (must_change_password === userData.ChangePassword) {
         router.push("/change-password");
         return;
@@ -48,7 +52,7 @@ const LoginPage = () => {
       }
     } catch (err: any) {
       console.log(err, "note err");
-      alert(err.response?.data?.message ?? "Login failed");
+      toast.error(err.details?.message ?? "Login failed");
     } finally {
       setLoading(false);
     }
@@ -93,6 +97,7 @@ const LoginPage = () => {
           </button>
         </form>
       </div>
+      <Toaster richColors position="top-center" />
     </section>
   );
 };

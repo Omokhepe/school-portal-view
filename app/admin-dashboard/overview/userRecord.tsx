@@ -25,29 +25,30 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
-import { useClasses, useUsers } from "../../../hooks/useData";
-import { useAuthStore } from "@store/authStore";
+import useAppStore, { UserType } from "@store/appStore";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
-// 1. Define columns for transaction table
+interface Props {
+  users: UserType[];
+  role?: string;
+}
 
-const UserRecord = () => {
-  const token = useAuthStore((s) => s.token);
-  const { classes } = useClasses(token);
-  const { users } = useUsers(token);
+const UserRecord = ({ users, role }: Props) => {
+  const classes = useAppStore((s) => s.classes);
   const [globalFilter, setGlobalFilter] = useState("");
   const searchParams = useSearchParams();
-  const filterCategory = searchParams.get("category");
+  const filterCategory = searchParams.get("class_id");
   const [categoryFilter, setCategoryFilter] = React.useState(
-    filterCategory || "all",
+    filterCategory || 0,
   );
-  const [sortBy, setSortBy] = React.useState("latest");
-
-  console.log(users, "userRecord");
 
   // // ✅ only runs when data is ready
   const userData = useMemo(() => users || [], [users]);
-
-  console.log(classes, "checking classes props");
 
   const classMap = useMemo(() => {
     const map: Record<number, string> = {};
@@ -63,6 +64,7 @@ const UserRecord = () => {
 
     return map;
   }, [classes]);
+
   const handleEdit = (user) => {
     console.log(user);
   };
@@ -74,7 +76,7 @@ const UserRecord = () => {
     () => [
       {
         accessorKey: "user_id",
-        header: "Student ID",
+        header: role === "student" ? "Student ID" : "Teacher ID",
       },
       {
         accessorKey: "name",
@@ -83,14 +85,6 @@ const UserRecord = () => {
       {
         accessorKey: "username",
         header: "User Name",
-      },
-      {
-        accessorKey: "role",
-        header: "Role",
-        cell: ({ row }) => {
-          const role = row.original.role;
-          return <span>{role.toUpperCase()}</span>;
-        },
       },
       {
         accessorKey: "created_at",
@@ -108,13 +102,7 @@ const UserRecord = () => {
         cell: ({ row }) => {
           const classId = row.original.class_id;
           return (
-            <span
-            // className={
-            //   amount < 0
-            //     ? "text-red-500 font-medium"
-            //     : "text-green-600 font-medium"
-            // }
-            >
+            <span>
               {classId !== null && classMap[classId]
                 ? classMap[classId]
                 : "Teacher"}
@@ -155,9 +143,10 @@ const UserRecord = () => {
   const filteredData = useMemo(() => {
     let filtered = [...(userData || [])];
 
-    if (categoryFilter !== "all") {
+    if (categoryFilter !== 0) {
       filtered = filtered.filter(
-        (item) => item.role.toLowerCase() === categoryFilter.toLowerCase(),
+        // (item) => item.role.toLowerCase() === categoryFilter.toLowerCase(),
+        (item) => item.class_id === categoryFilter,
       );
     }
     return filtered;
@@ -176,10 +165,12 @@ const UserRecord = () => {
   });
 
   // ✅ Get unique categories for dropdown
-  const categories = Array.from(new Set(userData.map((t) => t.role)));
+  const categories = Array.from(new Set(userData.map((t) => t.class_id)));
   return (
-    <div className="w-full bg-beige100 h-full  py-4">
-      <h2 className="text-grey900 text-3xl font-bold pb-8">All User Records</h2>
+    <div className="w-3/5 bg-beige100  py-4">
+      <h2 className="text-grey900 text-3xl font-bold pb-8">
+        All {role === "student" ? "Student" : "Teacher"} Records
+      </h2>
       {/*Filters*/}
       <div className="bg-white p-6 rounded-lg">
         <div className="flex flex-row justify-between pb-8 w-full">
@@ -192,7 +183,7 @@ const UserRecord = () => {
             id="search-input"
           />
           <div className="flex gap-5 items-center">
-            <label htmlFor="categoryFilter">Roles Categories</label>
+            <label htmlFor="categoryFilter">Class Categories</label>
             <Select
               onValueChange={setCategoryFilter}
               defaultValue={categoryFilter}
@@ -201,56 +192,76 @@ const UserRecord = () => {
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Roles</SelectItem>
+                <SelectItem value={0}>All Roles</SelectItem>
                 {categories.map((cat, index) => (
                   <SelectItem key={index} value={cat}>
-                    {cat.toUpperCase()}
+                    {classMap[cat]}
                   </SelectItem>
                 ))}
+                {/*{classes.map((cat, index) => (*/}
+                {/*  <SelectItem key={index} value={cat}>*/}
+                {/*    {cat}*/}
+                {/*  </SelectItem>*/}
+                {/*))}*/}
               </SelectContent>
             </Select>
           </div>
         </div>
 
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext(),
-                    )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-
-          <TableBody>
-            {table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} className="hover:bg-yellow">
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="table-section">
+            {/* -------- Trigger Section: ALWAYS visible -------- */}
+            <AccordionTrigger className="no-underline hover:no-underline">
+              <Table>
+                <TableHeader>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <TableHead key={header.id}>
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                        </TableHead>
+                      ))}
+                    </TableRow>
                   ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="text-center">
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+                </TableHeader>
+              </Table>
+            </AccordionTrigger>
+
+            {/* -------- Content Section: Visible only when expanded -------- */}
+            <AccordionContent>
+              <Table>
+                <TableBody>
+                  {table.getRowModel().rows.length ? (
+                    table.getRowModel().rows.map((row) => (
+                      <TableRow key={row.id} className="hover:bg-muted/30">
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id}>
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext(),
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={columns.length}
+                        className="text-center py-4"
+                      >
+                        No results.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
 
         <div className="flex items-center justify-between mt-4">
           <Button

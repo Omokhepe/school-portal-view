@@ -1,6 +1,3 @@
-// "use server";
-
-// import { appStore } from "@store/appStore";
 import useAppStore from "@store/appStore";
 import { apiFetch } from "@lib/helper";
 
@@ -16,7 +13,9 @@ export const fetchedClasses = async (token: string, force = false) => {
     const data = await apiFetch("/classes", token);
     // adapt depending on API shape
     const classes = Array.isArray(data) ? data : (data?.classes ?? []);
-    useAppStore.getState().setData("classes", classes);
+
+    store.setData("classes", classes);
+
     return classes;
   } catch (err) {
     store.finishLoading("classes");
@@ -81,11 +80,11 @@ export const fetchedTeachers = async (token: string, force = true) => {
   }
 };
 
-export const fetchedUsers = async (token: string) => {
+export const fetchedUsers = async (token: string, force = false) => {
   const store = useAppStore.getState();
 
-  if (store.fetched.users) return store.users;
-  if (store.inFlight.users) return;
+  if (store.fetched.users && !force) return store.users;
+  if (store.inFlight.users) return store.users;
 
   store.startLoading("users");
 

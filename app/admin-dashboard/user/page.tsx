@@ -2,13 +2,13 @@
 
 import React, { useEffect } from "react";
 import userBg from "@assets/images/userBG.png";
-import AddUser from "@/admin-dashboard/overview/addUser";
-import UserRecord from "@/admin-dashboard/overview/userRecord";
+// import AddUser from "@/admin-dashboard/overview/addUser";
+// import UserRecord from "@/admin-dashboard/overview/userRecord";
 import Protected from "@components/Protected";
 import NoteForm from "@/admin-dashboard/user/noteForm";
 import { useAuthStore } from "@store/authStore";
 import { useRouter } from "next/navigation";
-import { getSubjects } from "@actions/teacherNotes";
+// import { getSubjects } from "@actions/teacherNotes";
 
 const Page = () => {
   const router = useRouter();
