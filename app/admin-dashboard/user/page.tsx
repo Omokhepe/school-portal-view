@@ -30,6 +30,7 @@ const Page = () => {
         // className='relative h-full bg-fixed bg-center bg-cover w-full p-8'
         style={{ backgroundImage: `url(${userBg.src})` }}
       >
+        <h2>Lecture Note</h2>
         <NoteForm />
       </div>
     </Protected>

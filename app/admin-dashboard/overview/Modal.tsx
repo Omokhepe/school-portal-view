@@ -23,7 +23,7 @@ type DialogFormProps = {
   onSave: (value: any) => void;
   open: boolean;
   setOpen: (value: boolean) => void;
-  dataClass?: any[]; // or use a more specific type like { id: number; name: string }[]
+  dataClass: any[]; // or use a more specific type like { id: number; name: string }[]
   formData: Record<string, any>;
   setFormData: React.Dispatch<React.SetStateAction<Record<string, any>>>;
 };
@@ -51,7 +51,7 @@ export default function DialogForm({
   const [role, setRole] = useState("");
   const [inputName, setInputName] = useState("");
   const [inputUsername, setInputUsername] = useState("");
-  const classes = dataClass;
+  // const classes = dataClass;
   const [errors, setErrors] = useState<inputDataProps>({});
 
   const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
@@ -189,21 +189,26 @@ export default function DialogForm({
                 >
                   <NativeSelectOption value="">Select Class</NativeSelectOption>
                   <NativeSelectOptGroup label="Creche">
-                    {classes.creche?.map((item) => (
+                    {dataClass.creche?.map((item) => (
                       <NativeSelectOption key={item.id} value={item.id}>
                         {item.name}
                       </NativeSelectOption>
                     ))}
                   </NativeSelectOptGroup>
                   <NativeSelectOptGroup label="Primary">
-                    {classes.primary?.map((item) => (
+                    {dataClass.primary?.map((item) => (
                       <NativeSelectOption key={item.id} value={item.id}>
                         {item.name}
                       </NativeSelectOption>
                     ))}
                   </NativeSelectOptGroup>
                   <NativeSelectOptGroup label="Secondary">
-                    {classes.secondary?.map((item) => (
+                    {dataClass.jss?.map((item) => (
+                      <NativeSelectOption key={item.id} value={item.id}>
+                        {item.name}
+                      </NativeSelectOption>
+                    ))}
+                    {dataClass.ss?.map((item) => (
                       <NativeSelectOption key={item.id} value={item.id}>
                         {item.name}
                       </NativeSelectOption>

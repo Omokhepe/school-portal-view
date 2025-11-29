@@ -52,7 +52,8 @@ export const groupClassesByLevel = (classes) => {
   const allClasses = [
     ...classes.creche,
     ...classes.primary,
-    ...classes.secondary,
+    ...classes.jss,
+    ...classes.ss,
   ];
   return allClasses.reduce((acc, cls) => {
     if (!acc[cls.level]) acc[cls.level] = [];

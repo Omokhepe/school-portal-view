@@ -11,7 +11,7 @@ import { refreshResources, useClasses } from "../../../hooks/useData";
 
 const AddUser = () => {
   const token: string | null = useAuthStore((s) => s.token);
-  const classes = useClasses(token);
+  const { data: classes } = useClasses(token);
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     inputName: "",

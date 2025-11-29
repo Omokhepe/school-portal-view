@@ -23,7 +23,7 @@ const UserOverview = () => {
 
   console.log(students, classes, grouped, "whatagwan");
   return (
-    <Accordion type="multiple" className="space-y-4 w-2/7">
+    <Accordion type="multiple" className="flex flex-2/7 flex-col space-y-4">
       {Object.keys(grouped).map((level) => {
         const classesInLevel = grouped[level];
 
