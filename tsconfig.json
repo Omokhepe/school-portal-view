@@ -28,7 +28,7 @@
       "@store/*": ["store/*"],
       "@actions/*": ["actions/*"],
       "@lib/*": ["lib/*"],
-      "@types/*": ["types/*"]
+//      "@types/*": ["types/*"]
     }
   },
   "include": [

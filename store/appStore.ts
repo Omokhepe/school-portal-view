@@ -16,7 +16,7 @@ export type UserType = {
 };
 
 type AppState = {
-  classes: ClassSub[];
+  classes: ClassSub;
   subjects: any[];
   students: UserType[];
   teachers: UserType[];
@@ -37,7 +37,13 @@ const storage = createIndexedDBStorage<AppState>("SchoolDB", "SchoolStore");
 export const useAppStore = create<AppState>()(
   persist(
     (set, get) => ({
-      classes: [],
+      classes: {
+        creche: [],
+        primary: [],
+        jss: [],
+        ss: [],
+      },
+
       subjects: [],
       students: [],
       teachers: [],
@@ -84,7 +90,13 @@ export const useAppStore = create<AppState>()(
         })),
       clearAll: () =>
         set(() => ({
-          classes: [],
+          classes: {
+            creche: [],
+            primary: [],
+            jss: [],
+            ss: [],
+          },
+
           subjects: [],
           students: [],
           teachers: [],

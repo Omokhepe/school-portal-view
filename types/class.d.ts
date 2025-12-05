@@ -10,11 +10,11 @@ interface ClassSub {
   ss: Classes[];
 }
 
-interface Classes {
+type Classes = {
   id: number;
   name: string;
   level: string;
-}
+};
 
 export type FormDataType = {
   topic: string;

@@ -24,7 +24,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import { ArrowBigLeft, ArrowBigRight, Pencil, Trash } from "lucide-react";
 import useAppStore, { UserType } from "@store/appStore";
 import {
   Accordion,
@@ -120,16 +120,16 @@ const UserRecord = ({ users, role }: Props) => {
             <div className="flex gap-2">
               <button
                 onClick={() => handleEdit(user)}
-                className="px-2 py-1 text-sm bg-yellow-900 w-15 text-off-white rounded hover:bg-yellow-700"
+                className="px-2 py-1 text-sm text-yellow-900  rounded hover:text-yellow-700"
               >
-                Edit
+                <Pencil />
               </button>
 
               <button
                 onClick={() => handleDelete(user.id)}
-                className="px-2 py-1 text-sm text-red-600 border border-red-600 rounded hover:bg-red-50"
+                className="px-2 py-1 text-sm text-red-600 border  rounded hover:bg-red-50"
               >
-                Delete
+                <Trash />
               </button>
             </div>
           );
@@ -211,7 +211,7 @@ const UserRecord = ({ users, role }: Props) => {
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="table-section">
             {/* -------- Trigger Section: ALWAYS visible -------- */}
-            <AccordionTrigger className="no-underline hover:no-underline">
+            <AccordionTrigger className="no-underline hover:no-underline mx-2">
               <Table>
                 <TableHeader>
                   {table.getHeaderGroups().map((headerGroup) => (
@@ -236,7 +236,7 @@ const UserRecord = ({ users, role }: Props) => {
                 <TableBody>
                   {table.getRowModel().rows.length ? (
                     table.getRowModel().rows.map((row) => (
-                      <TableRow key={row.id} className="hover:bg-muted/30">
+                      <TableRow key={row.id} className="hover:bg-muted/30 ">
                         {row.getVisibleCells().map((cell) => (
                           <TableCell key={cell.id}>
                             {flexRender(

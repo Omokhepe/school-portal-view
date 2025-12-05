@@ -1,3 +1,5 @@
+import { ClassSub } from "../types/class";
+
 export function getLaravelError(err: any): string {
   const data = err.response?.data;
   console.log(data, err.message, err.response);
@@ -13,26 +15,20 @@ export function getLaravelError(err: any): string {
   return data.message || "Something went wrong";
 }
 
-// export const apiFetch = async (url: string, token: string) => {
-//   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`, {
-//     // method: "GET",
-//     headers: { Authorization: `Bearer ${token}` },
-//     cache: "no-store",
-//   });
-//
-//   const data = await res.json();
-//   return data;
-// };
-
 // src/lib/apiFetch.ts
-export async function apiFetch<T = any>(path: string, token: string | null) {
+export async function apiFetch<T = any>(
+  path: string,
+  token: string | null,
+  opts: RequestInit = {},
+) {
   const url = `${process.env.NEXT_PUBLIC_API_URL}${path}`;
-  const headers: Record<string, string> = {
+  const headers: HeadersInit = {
+    Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
+    ...(opts.headers || {}),
   };
-  if (token) headers["Authorization"] = `Bearer ${token}`;
 
-  const res = await fetch(url, { headers, cache: "no-store" });
+  const res = await fetch(url, { ...opts, headers });
 
   const text = await res.text();
   try {
@@ -48,7 +44,7 @@ export async function apiFetch<T = any>(path: string, token: string | null) {
 }
 
 // Group classes by their level
-export const groupClassesByLevel = (classes) => {
+export const groupClassesByLevel = (classes: ClassSub) => {
   const allClasses = [
     ...classes.creche,
     ...classes.primary,
@@ -72,3 +68,10 @@ export const getLevelStudentCount = (students, grouped, level) => {
   const classIds = grouped[level].map((c) => c.id);
   return students.filter((s) => classIds.includes(s.class_id)).length;
 };
+
+export function formatDate(dateStr: string) {
+  const d = new Date(dateStr);
+  const day = d.getDate().toString().padStart(2, "0");
+  const month = d.toLocaleString("en", { month: "short" });
+  return `${day}/${month}`;
+}

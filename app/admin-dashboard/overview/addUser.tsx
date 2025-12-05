@@ -7,11 +7,12 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import DialogForm from "@/admin-dashboard/overview/Modal";
-import { refreshResources, useClasses } from "../../../hooks/useData";
+import { refreshResources } from "../../../hooks/useData";
+import useAppStore from "@store/appStore";
 
 const AddUser = () => {
   const token: string | null = useAuthStore((s) => s.token);
-  const { data: classes } = useClasses(token);
+  const classes = useAppStore((s) => s.classes);
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     inputName: "",
@@ -33,6 +34,13 @@ const AddUser = () => {
 
       //this reloads api to get new data after user is saved
       await refreshResources(["users", "students", "teachers"], token);
+
+      setFormData({
+        inputName: "",
+        inputUsername: "",
+        role: "",
+        studentClass: "",
+      });
 
       toast.success("User created successfully.");
     } catch (err: any) {

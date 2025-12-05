@@ -14,6 +14,7 @@ import {
   NativeSelectOptGroup,
   NativeSelectOption,
 } from "@/components/ui/native-select";
+import { ClassSub } from "../../../types/class";
 
 type DialogFormProps = {
   title?: string;
@@ -23,7 +24,7 @@ type DialogFormProps = {
   onSave: (value: any) => void;
   open: boolean;
   setOpen: (value: boolean) => void;
-  dataClass: any[]; // or use a more specific type like { id: number; name: string }[]
+  dataClass: ClassSub; // or use a more specific type like { id: number; name: string }[]
   formData: Record<string, any>;
   setFormData: React.Dispatch<React.SetStateAction<Record<string, any>>>;
 };
@@ -84,7 +85,7 @@ export default function DialogForm({
     onSave(formData); // send data upward
     setOpen(false);
   };
-  console.log(errors, "errors on popup");
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-md">

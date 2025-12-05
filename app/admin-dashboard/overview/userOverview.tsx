@@ -12,12 +12,11 @@ import {
 } from "@/components/ui/accordion";
 
 const UserOverview = () => {
-  const classes = useAppStore((s) => s.classes);
-  const students = useAppStore((s) => s.students);
+  const { classes, students } = useAppStore();
 
   console.log(classes, "checking");
   let grouped = {};
-  if (classes.length !== 0) {
+  if (classes) {
     grouped = groupClassesByLevel(classes);
   }
 

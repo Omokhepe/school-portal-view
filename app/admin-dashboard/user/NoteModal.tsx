@@ -25,7 +25,7 @@ import MultiSelect from "@components/MultiSelect";
 import { weekOptions } from "../../../constant/data";
 import { Textarea } from "@/components/ui/textarea";
 import { X } from "lucide-react";
-import { ClassSub } from "@types/class";
+import { ClassSub } from "../../../types/class";
 import { addNote } from "@actions/user";
 
 // ---------------- TYPES ----------------
@@ -73,6 +73,7 @@ export default function NoteModal({
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  if (!dataClass) return;
   const allClasses = [
     ...dataClass.creche,
     ...dataClass.primary,
@@ -114,8 +115,6 @@ export default function NoteModal({
   const submit = async (e?: React.FormEvent) => {
     e?.preventDefault();
     setErrors({});
-
-    console.log(form);
 
     // basic validation
     const newErrors: Record<string, string> = {};
