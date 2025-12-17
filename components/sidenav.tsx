@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { sideNavLinks } from "../constant/data";
+import { groupedLevel, sideNavLinks } from "../constant/data";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@store/authStore";
 import { ChevronDown, ChevronUp, LogOut, ShieldUser } from "lucide-react";
-import { groupClassesByLevel } from "@lib/helper";
+// import { groupClassesByLevel } from "@lib/helper";
 import useAppStore from "@store/appStore";
 
 interface Props {
@@ -18,19 +18,13 @@ const Sidenav = ({ isOpen, setIsOpen }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
   const logout = useAuthStore((s) => s.logout);
-  const classes = useAppStore((s) => s.classes);
   const [isLectureOpen, setIsLectureOpen] = useState(false);
   const [showSubMenu, setShowSubMenu] = useState(false);
-  const [subMenuName, setSubMenuName] = useState("");
+  // const [subMenuName, setSubMenuName] = useState("");
 
   const handleClick = (level: string) => {
     router.push(`/admin-dashboard/lecture-note/${level}`);
   };
-
-  let grouped = {};
-  if (classes) {
-    grouped = groupClassesByLevel(classes);
-  }
 
   const handleLogout = () => {
     logout();
@@ -43,8 +37,8 @@ const Sidenav = ({ isOpen, setIsOpen }: Props) => {
       setIsLectureOpen((v) => !v);
       setShowSubMenu(!showSubMenu);
     };
-    const isActiveSub =
-      pathname === `/admin-dashboard/lecture-note/${subMenuName}`;
+    // const isActiveSub =
+    //   pathname === `/admin-dashboard/lecture-note/${subMenuName}`;
 
     return (
       <div key={index}>
@@ -77,26 +71,23 @@ const Sidenav = ({ isOpen, setIsOpen }: Props) => {
             // style={{ height: isLectureOpen && showSubMenu ? "auto" : "0px" }}
           >
             <div className="mt-2 space-y-3">
-              {Object.entries(grouped).map(([group]) => {
-                return (
-                  <div
-                    key={group}
-                    onClick={() => {
-                      handleClick(group);
-                      setSubMenuName(group);
-                    }}
-                    // className={`flex items-center cursor-pointer p-2.5 pl-8 gap-4 font-mono ${
-                    //   isActiveSub
-                    //     ? "bg-yellow-900 text-amber-50 w-4/5 rounded-r-lg"
-                    //     : "hover:text-grey500"
-                    // }`}
-                  >
-                    <p className="text-xs font-semibold text-gray-200 text-manrope capitalize py-1 pl-8">
-                      {group}
-                    </p>
-                  </div>
-                );
-              })}
+              {groupedLevel.map((level, index) => (
+                <div
+                  key={index}
+                  onClick={() => {
+                    handleClick(level.value);
+                  }}
+                  // className={`flex items-center cursor-pointer p-2.5 pl-8 gap-4 font-mono ${
+                  //   isActiveSub
+                  //     ? "bg-yellow-900 text-amber-50 w-4/5 rounded-r-lg"
+                  //     : "hover:text-grey500"
+                  // }`}
+                >
+                  <p className="text-xs font-semibold text-gray-200 text-manrope capitalize py-1 pl-8 cursor-pointer">
+                    {level.label}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         )}

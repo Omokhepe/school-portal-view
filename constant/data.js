@@ -43,6 +43,25 @@ export const sideNavLinks = [
   },
 ];
 
+export const groupedLevel = [
+  {
+    value: "creche",
+    label: "creche",
+  },
+  {
+    value: "primary",
+    label: "primary",
+  },
+  {
+    value: "jss",
+    label: "junior secondary",
+  },
+  {
+    value: "ss",
+    label: "senior secondary",
+  },
+];
+
 export const weekOptions = [
   { value: "1", label: "Week 1" },
   { value: "2", label: "Week 2" },

@@ -44,19 +44,19 @@ export async function apiFetch<T = any>(
 }
 
 // Group classes by their level
-export const groupClassesByLevel = (classes: ClassSub) => {
-  const allClasses = [
-    ...classes.creche,
-    ...classes.primary,
-    ...classes.jss,
-    ...classes.ss,
-  ];
-  return allClasses.reduce((acc, cls) => {
-    if (!acc[cls.level]) acc[cls.level] = [];
-    acc[cls.level].push(cls);
-    return acc;
-  }, {});
-};
+// export const groupClassesByLevel = (classes: ClassSub) => {
+//   const allClasses = [
+//     ...classes.creche,
+//     ...classes.primary,
+//     ...classes.jss,
+//     ...classes.ss,
+//   ];
+//   return allClasses.reduce((acc, cls) => {
+//     if (!acc[cls.level]) acc[cls.level] = [];
+//     acc[cls.level].push(cls);
+//     return acc;
+//   }, {});
+// };
 
 // // Count students in a specific class
 // export const getClassStudentCount = (students, classId) => {
