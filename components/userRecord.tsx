@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
+  ColumnDef,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -67,7 +68,7 @@ const UserRecord = ({ users, role }: Props) => {
     console.log(id);
   };
 
-  const columns = useMemo(
+  const columns: ColumnDef<UserType>[] = useMemo<ColumnDef<UserType>[]>(
     () => [
       {
         accessorKey: "name",
