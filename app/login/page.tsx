@@ -54,6 +54,7 @@ const LoginPage = () => {
       } else {
         setChangePassword(false);
         toast.success("Login Successful");
+        if (!token) return;
         await refreshResources(
           ["students", "teachers", "classes", "subjects"],
           token,
