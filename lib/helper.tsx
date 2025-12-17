@@ -75,3 +75,21 @@ export function formatDate(dateStr: string) {
   const month = d.toLocaleString("en", { month: "short" });
   return `${day}/${month}`;
 }
+
+export function validateAndPreviewImage(
+  file: File | null,
+  onValid: (previewUrl: string, file: File) => void,
+  onError?: (message: string) => void,
+) {
+  if (!file) return;
+
+  const allowedTypes = ["image/jpeg", "image/png", "image/jpg", "image/webp"];
+
+  if (!allowedTypes.includes(file.type)) {
+    onError?.("Only images are allowed");
+    return;
+  }
+
+  const previewUrl = URL.createObjectURL(file);
+  onValid(previewUrl, file);
+}

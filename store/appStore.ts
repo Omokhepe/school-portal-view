@@ -4,20 +4,13 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { ClassSub } from "../types/class";
 import { createIndexedDBStorage } from "@store/indexedDBStorage";
+import { SubjectType, UserType } from "../types/user";
 
 type DataKey = "classes" | "subjects" | "students" | "teachers" | "users";
 
-export type UserType = {
-  id: number;
-  name: string;
-  class_id?: number | null;
-  role?: string;
-  [k: string]: any;
-};
-
 type AppState = {
   classes: ClassSub;
-  subjects: any[];
+  subjects: SubjectType[];
   students: UserType[];
   teachers: UserType[];
   users: UserType[];

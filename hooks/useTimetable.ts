@@ -21,3 +21,19 @@ export function useTimetable(classId?: number | null) {
 
   return { entries: data ?? [], error, refresh, mutate };
 }
+
+export function useTeacherTimetable() {
+  const token = useAuthStore((s) => s.token);
+  const key = token ? [`/timetable/teacher`, token] : null;
+  const { data, error, mutate } = useSWR<TimetableEntry[]>(
+    key,
+    async ([url, t]) => {
+      return apiFetch(url, t);
+    },
+    { revalidateOnFocus: false },
+  );
+
+  const refreshData = () => mutate();
+
+  return { teacherEntries: data ?? [], error, refreshData, mutate };
+}

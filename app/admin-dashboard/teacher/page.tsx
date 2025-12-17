@@ -1,16 +1,15 @@
 "use client";
 
 import React, { useEffect } from "react";
-import homeBG from "@assets/images/homeBG.png";
 import Protected from "@components/Protected";
-import SummaryCard from "@/admin-dashboard/home/summaryCard";
-import Announcement from "@/admin-dashboard/home/announcement";
+import teacherBG from "@assets/images/teacherBG.png";
+import AddTeacher from "@/admin-dashboard/teacher/addTeacher";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@store/authStore";
 
 const Page = () => {
   const router = useRouter();
-  const { token, hydrated, user } = useAuthStore();
+  const { token, hydrated } = useAuthStore();
 
   useEffect(() => {
     if (!hydrated) return;
@@ -18,18 +17,14 @@ const Page = () => {
   }, [token, hydrated]);
 
   if (!hydrated) return null;
-
   return (
-    <Protected roles={["admin", "teacher"]}>
+    <Protected roles={["admin"]}>
       <div
         className="flex-1 h-full pl-15 pr-8 pt-10"
-        style={{ backgroundImage: `url(${homeBG.src})` }}
+        style={{ backgroundImage: `url(${teacherBG.src})` }}
       >
-        <h2 className="font-bold text-3xl">Home </h2>
-        <div className="flex items-start">
-          <SummaryCard />
-          <Announcement />
-        </div>
+        <h3 className="font-bold font-mono text-2xl pb-4">Teacher</h3>
+        <AddTeacher />
       </div>
     </Protected>
   );

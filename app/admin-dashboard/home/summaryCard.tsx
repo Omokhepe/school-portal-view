@@ -30,7 +30,6 @@ const SummaryCard = () => {
           <p className="text-3xl font-bold">{teachers.length}</p>
           <p className="text-sm text-gray-500">Total Teachers</p>
         </div>
-        {/*// ))}*/}
       </div>
     </>
   );

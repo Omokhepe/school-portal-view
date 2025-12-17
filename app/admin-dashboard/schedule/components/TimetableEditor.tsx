@@ -13,14 +13,15 @@ import { TimetableEntry } from "../../../../types/timetable";
 import { addSchedule } from "@actions/timetable";
 import { apiFetch } from "@lib/helper";
 import { toast } from "sonner";
+import { SubjectType, UserType } from "../../../../types/user";
 
 type Props = {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   entry?: TimetableEntry | null;
   classId: number;
-  subjects: { id: number; name: string }[];
-  teachers: { id: number; name: string }[];
+  subjects: SubjectType[];
+  teachers: UserType[];
   onSaved: () => void;
 };
 
@@ -209,7 +210,7 @@ const TimetableEditor = ({
               <option value="">Auto / None</option>
               {teachers.map((t) => (
                 <option key={t.id} value={t.id}>
-                  {t.name}
+                  {t.first_name} {t.last_name}
                 </option>
               ))}
             </select>

@@ -117,7 +117,7 @@ const LoginPage = () => {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Email"
+                  placeholder="Username"
                   className="placeholder:text-off-white text-white"
                 />
               </div>

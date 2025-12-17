@@ -1,10 +1,10 @@
-// import OverviewIcon from '@assets/images/icon-nav-overview.svg';
-// import TransactionIcon from '@assets/images/icon-nav-transactions.svg';
-// import BudgetIcon from '@assets/images/icon-nav-budgets.svg';
-// import PotIcon from '@assets/images/icon-nav-pots.svg';
-// import BillIcon from '@assets/images/icon-nav-recurring-bills.svg';
-
-import { Home, LucidePencilRuler, Notebook, UserIcon } from "lucide-react";
+import {
+  GraduationCap,
+  Home,
+  LucidePencilRuler,
+  Notebook,
+  UserIcon,
+} from "lucide-react";
 
 export const navLinks = [
   { href: "/", label: "Home" },
@@ -16,11 +16,26 @@ export const navLinks = [
 export const sideNavLinks = [
   { href: "/admin-dashboard/home", label: "Home", icon: <Home /> },
   {
-    href: "/admin-dashboard/overview",
-    label: "Add Student/Teachers",
+    href: "/admin-dashboard/student",
+    label: "Student",
+    icon: <GraduationCap />,
+  },
+  {
+    href: "/admin-dashboard/teacher",
+    label: "Teacher",
     icon: <UserIcon />,
   },
-  { href: "/admin-dashboard/user", label: "Lecture Note", icon: <Notebook /> },
+  // {
+  //   href: "/admin-dashboard/overview",
+  //   label: "Add Student/Teachers",
+  //   icon: <UserIcon />,
+  // },
+  {
+    href: "/admin-dashboard/lecture-note",
+    label: "Lecture Note",
+    icon: <Notebook />,
+    isLectureNote: true,
+  },
   {
     href: "/admin-dashboard/schedule",
     label: "TimeTable",
@@ -82,4 +97,31 @@ export const FIXED_BREAKS = [
     end: "14:30",
     type: "break",
   },
+];
+
+export const EduQualifications = [
+  "Primary School Leaving Certificate",
+  "Junior Secondary School Certificate",
+  "Senior Secondary Certificate",
+  "Trade Test",
+  "National Diploma (ND)",
+  "Higher National Diploma (HND)",
+  "Bachelor's Degree",
+  "Professional Diploma",
+  "Postgraduate Diploma",
+  "Masters Degree",
+  "Doctorate Degree",
+  "NCE",
+  "Professional Certifications",
+  "Seminary Certificate",
+  "Quranic Certificate",
+  "Apprenticeship",
+];
+
+export const gender = ["male", "female"];
+
+export const noteActions = [
+  { label: "Add Subtopic", type: "subtitle" },
+  { label: "Add Content", type: "content" },
+  { label: "Add Image", type: "image" },
 ];

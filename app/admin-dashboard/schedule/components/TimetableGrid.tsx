@@ -2,8 +2,12 @@
 
 import React, { useMemo, useState } from "react";
 import { FIXED_BREAKS, slots } from "../../../../constant/data";
-import { useTimetable } from "../../../../hooks/useTimetable";
+import {
+  useTeacherTimetable,
+  useTimetable,
+} from "../../../../hooks/useTimetable";
 import TimetableEditor from "@/admin-dashboard/schedule/components/TimetableEditor";
+import { SubjectType, UserType } from "../../../../types/user";
 
 export const days = [
   "monday",
@@ -15,12 +19,14 @@ export const days = [
 
 type Props = {
   classId: number;
-  subjects: { id: number; name: string }[];
-  teachers: { id: number; name: string }[];
+  subjects: SubjectType[];
+  teachers: UserType[];
+  role?: string;
 };
 
-const TimetableGrid = ({ classId, subjects, teachers }: Props) => {
+const TimetableGrid = ({ classId, subjects, teachers, role }: Props) => {
   const { entries, refresh } = useTimetable(classId);
+  const { teacherEntries, refreshData } = useTeacherTimetable();
   const [editorOpen, setEditorOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<any>(null);
 
@@ -34,10 +40,17 @@ const TimetableGrid = ({ classId, subjects, teachers }: Props) => {
     const m: Record<string, { type: "entry" | "break"; data: any }> = {};
 
     // Add timetable entries
-    entries.forEach((e) => {
-      const key = `${e.day}-${e.start_time}`;
-      m[key] = { type: "entry", data: e };
-    });
+    if (role === "teacher") {
+      teacherEntries.forEach((e) => {
+        const key = `${e.day}-${e.start_time}`;
+        m[key] = { type: "entry", data: e };
+      });
+    } else {
+      entries.forEach((e) => {
+        const key = `${e.day}-${e.start_time}`;
+        m[key] = { type: "entry", data: e };
+      });
+    }
 
     // Add fixed breaks
     days.forEach((day) => {
@@ -48,7 +61,7 @@ const TimetableGrid = ({ classId, subjects, teachers }: Props) => {
     });
 
     return m;
-  }, [entries]);
+  }, [entries, role, teacherEntries]);
 
   const openEditorFor = (day: string, slot: { start: string; end: string }) => {
     const existing = map[`${day}-${slot.start}`] ?? null;
@@ -82,28 +95,43 @@ const TimetableGrid = ({ classId, subjects, teachers }: Props) => {
           <div>
             {slots.map((slot) => (
               <div key={slot.start} className="flex items-center gap-4">
-                <span className="p-2 text-sm font-medium">
-                  {slot.start} - {slot.end}
-                </span>
+                <span className="p-2 text-sm font-medium">{slot.start}</span>
                 {days.map((day) => {
                   const key = `${day}-${slot.start}`;
                   const entry = map[key];
+                  console.log(entry, "hey God oo");
                   return (
                     <div
                       key={key}
                       className={`
-                        w-45 h-12 m-2 border-2 rounded-md hover:bg-gray-50 hover:text-gray-700 cursor-pointer ${entry ? "border-greyGreen bg-green-100 text-yellow-950" : ""}
+                        w-45 h-12 m-2 border-2 rounded-md hover:bg-gray-50 hover:text-gray-700 cursor-pointer ${entry ? "border-greyGreen text-yellow-950" : ""}
+                       ${
+                         role === "teacher"
+                           ? "cursor-not-allowed opacity-70 pointer-events-none"
+                           : "cursor-pointer hover:bg-gray-50 hover:text-gray-700"
+                       }
                       `}
-                      onClick={() => openEditorFor(day, slot)}
+                      onClick={() => {
+                        if (role === "teacher") return;
+                        openEditorFor(day, slot);
+                      }}
                     >
                       {entry ? (
                         entry.type === "entry" ? (
-                          <div className="space-y-1 text-center my-auto">
-                            <div className="font-semibold text-sm">
+                          <div
+                            className="space-y-2 text-center my-auto"
+                            style={{
+                              backgroundColor: `${entry.data.subject?.color}40`,
+                              // bordsr: `2px solid ${entry.data.subject.color}`,
+                              // opacity: "0.5",
+                            }}
+                          >
+                            <div className="font-semibold text-xs pt-1 font-mono">
                               {entry.data.subject?.name ?? "—"}
                             </div>
                             <div className="text-xs text-gray-600">
-                              {entry.data.teacher?.name ?? ""}
+                              {entry.data.teacher?.first_name ?? ""}{" "}
+                              {entry.data.teacher?.last_name ?? ""}
                             </div>
                           </div>
                         ) : (
@@ -121,59 +149,6 @@ const TimetableGrid = ({ classId, subjects, teachers }: Props) => {
             ))}
           </div>
         </div>
-
-        {/*<table className="w-full table-fixed ">*/}
-        {/*  <thead className="bg-gray-50">*/}
-        {/*    <tr>*/}
-        {/*      <th className="p-2">Time</th>*/}
-        {/*      {days.map((d) => (*/}
-        {/*        <th key={d} className="p-2 capitalize">*/}
-        {/*          {d}*/}
-        {/*        </th>*/}
-        {/*      ))}*/}
-        {/*    </tr>*/}
-        {/*  </thead>*/}
-
-        {/*  <tbody>*/}
-        {/*    {slots.map((slot) => (*/}
-        {/*      <tr key={slot.start}>*/}
-        {/*        <td className="p-2 text-sm font-medium">*/}
-        {/*          {slot.start} - {slot.end}*/}
-        {/*        </td>*/}
-        {/*        {days.map((day) => {*/}
-        {/*          const key = `${day}-${slot.start}`;*/}
-        {/*          const entry = map[key];*/}
-        {/*          return (*/}
-        {/*            <td*/}
-        {/*              key={key}*/}
-        {/*              className="p-2 border-4 rounded-2xl hover:bg-gray-50 cursor-pointer border-black m-5"*/}
-        {/*              onClick={() => openEditorFor(day, slot)}*/}
-        {/*            >*/}
-        {/*              {entry ? (*/}
-        {/*                entry.type === "entry" ? (*/}
-        {/*                  <div className="space-y-1">*/}
-        {/*                    <div className="font-semibold">*/}
-        {/*                      {entry.data.subject?.name ?? "—"}*/}
-        {/*                    </div>*/}
-        {/*                    <div className="text-xs text-gray-600">*/}
-        {/*                      {entry.data.teacher?.name ?? ""}*/}
-        {/*                    </div>*/}
-        {/*                  </div>*/}
-        {/*                ) : (*/}
-        {/*                  <div className="text-sm text-gray-400 font-bold">*/}
-        {/*                    {entry.data.label}*/}
-        {/*                  </div>*/}
-        {/*                )*/}
-        {/*              ) : (*/}
-        {/*                <div className="text-sm text-gray-400">Add</div>*/}
-        {/*              )}*/}
-        {/*            </td>*/}
-        {/*          );*/}
-        {/*        })}*/}
-        {/*      </tr>*/}
-        {/*    ))}*/}
-        {/*  </tbody>*/}
-        {/*</table>*/}
       </div>
       <TimetableEditor
         open={editorOpen}

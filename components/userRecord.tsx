@@ -25,13 +25,8 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { ArrowBigLeft, ArrowBigRight, Pencil, Trash } from "lucide-react";
-import useAppStore, { UserType } from "@store/appStore";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import useAppStore from "@store/appStore";
+import { UserType } from "../types/user";
 
 interface Props {
   users: UserType[];
@@ -75,22 +70,46 @@ const UserRecord = ({ users, role }: Props) => {
   const columns = useMemo(
     () => [
       {
-        accessorKey: "user_id",
-        header: role === "student" ? "Student ID" : "Teacher ID",
+        accessorKey: "name",
+        header: "Recipient/ Sender",
+        cell: ({ row }) => {
+          const { image, first_name, last_name } = row.original;
+          const imageUrl = `${process.env.NEXT_PUBLIC_API_IMG_URL}/storage/${image}`;
+          return (
+            <div className="flex items-center gap-3">
+              <img
+                src={imageUrl}
+                alt="hello"
+                className="h-10 w-10 rounded-full object-cover border"
+              />
+              <span>
+                {first_name} {last_name}
+              </span>
+            </div>
+          );
+        },
       },
       {
-        accessorKey: "name",
-        header: "Name",
+        accessorKey: "user_id",
+        header: "Student ID",
       },
       {
         accessorKey: "username",
         header: "User Name",
       },
       {
+        accessorKey: "gender",
+        header: "Gender",
+        cell: ({ row }) => {
+          const { gender } = row.original;
+          return <span className="capitalize">{gender}</span>;
+        },
+      },
+      {
         accessorKey: "created_at",
-        header: "Date Added",
+        header: "Date of Birth",
         cell: ({ row }) =>
-          new Date(row.original.created_at).toLocaleDateString("en-GB", {
+          new Date(row.original.date_of_birth).toLocaleDateString("en-GB", {
             day: "2-digit",
             month: "short",
             year: "numeric",
@@ -167,10 +186,10 @@ const UserRecord = ({ users, role }: Props) => {
   // ✅ Get unique categories for dropdown
   const categories = Array.from(new Set(userData.map((t) => t.class_id)));
   return (
-    <div className="w-3/5 bg-beige100  py-4">
-      <h2 className="text-grey900 text-3xl font-bold pb-8">
-        All {role === "student" ? "Student" : "Teacher"} Records
-      </h2>
+    <div className=" bg-beige100  py-4">
+      {/*<h2 className="text-grey900 text-3xl font-bold pb-8">*/}
+      {/*  All {role === "student" ? "Student" : "Teacher"} Records*/}
+      {/*</h2>*/}
       {/*Filters*/}
       <div className="bg-white p-6 rounded-lg">
         <div className="flex flex-row justify-between pb-8 w-full">
@@ -208,60 +227,45 @@ const UserRecord = ({ users, role }: Props) => {
           </div>
         </div>
 
-        <Accordion type="single" collapsible className="w-full">
-          <AccordionItem value="table-section">
-            {/* -------- Trigger Section: ALWAYS visible -------- */}
-            <AccordionTrigger className="no-underline hover:no-underline mx-2">
-              <Table>
-                <TableHeader>
-                  {table.getHeaderGroups().map((headerGroup) => (
-                    <TableRow key={headerGroup.id}>
-                      {headerGroup.headers.map((header) => (
-                        <TableHead key={header.id}>
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                        </TableHead>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableHeader>
-              </Table>
-            </AccordionTrigger>
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
 
-            {/* -------- Content Section: Visible only when expanded -------- */}
-            <AccordionContent>
-              <Table>
-                <TableBody>
-                  {table.getRowModel().rows.length ? (
-                    table.getRowModel().rows.map((row) => (
-                      <TableRow key={row.id} className="hover:bg-muted/30 ">
-                        {row.getVisibleCells().map((cell) => (
-                          <TableCell key={cell.id}>
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext(),
-                            )}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell
-                        colSpan={columns.length}
-                        className="text-center py-4"
-                      >
-                        No results.
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+          <TableBody>
+            {table.getRowModel().rows.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id} className="hover:bg-yellow">
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="text-center">
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
 
         <div className="flex items-center justify-between mt-4">
           <Button
