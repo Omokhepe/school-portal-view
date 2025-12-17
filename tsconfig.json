@@ -27,8 +27,7 @@
       "@assets/*": ["./public/assets/*"],
       "@store/*": ["store/*"],
       "@actions/*": ["actions/*"],
-      "@lib/*": ["lib/*"],
-//      "@types/*": ["types/*"]
+      "@lib/*": ["lib/*"]
     }
   },
   "include": [
