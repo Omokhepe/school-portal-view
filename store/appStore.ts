@@ -7,15 +7,17 @@ import { createIndexedDBStorage } from "@store/indexedDBStorage";
 import { SubjectType, UserType } from "../types/user";
 import { DataKey } from "../types/auth";
 
-type AppState = {
+type PersistedAppState = {
   classes: ClassSub;
-  subjects: SubjectType[];
+  users: UserType[];
   students: UserType[];
   teachers: UserType[];
-  users: UserType[];
-
-  inFlight: Record<DataKey, boolean>;
+  subjects: SubjectType[];
   fetched: Record<DataKey, boolean>;
+};
+
+type AppState = PersistedAppState & {
+  inFlight: Record<DataKey, boolean>;
 
   setData: <K extends DataKey>(key: K, data: AppState[K]) => void;
   startLoading: (key: DataKey) => void;
@@ -24,7 +26,10 @@ type AppState = {
   clearAll: () => void;
 };
 
-const storage = createIndexedDBStorage<AppState>("SchoolDB", "SchoolStore");
+const storage = createIndexedDBStorage<PersistedAppState>(
+  "SchoolDB",
+  "SchoolStore",
+);
 
 export const useAppStore = create<AppState>()(
   persist(
