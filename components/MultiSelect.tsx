@@ -17,13 +17,13 @@ import { cn } from "@/lib/utils";
 
 export type MultiSelectOption = {
   label: string;
-  value: number;
+  value: string;
 };
 
 export interface MultiSelectProps {
   options: MultiSelectOption[];
-  value: number[];
-  onChange: React.Dispatch<React.SetStateAction<number[]>>;
+  value: string[];
+  onChange: React.Dispatch<React.SetStateAction<string[]>>;
   placeholder?: string;
 }
 
@@ -35,7 +35,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
 }) => {
   const [open, setOpen] = React.useState(false);
 
-  const toggleOption = (val: number) => {
+  const toggleOption = (val: string) => {
     if (value.includes(val)) {
       onChange(value.filter((v) => v !== val));
     } else {
