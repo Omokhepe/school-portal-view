@@ -121,11 +121,13 @@ const UserRecord = ({ users, role }: Props) => {
         header: "Class",
         cell: ({ row }) => {
           const classId = row.original.class_id;
+          if (!classId) return;
           return (
             <span>
-              {classId !== null && classMap[classId]
-                ? classMap[classId]
-                : "Teacher"}
+              {/*{classId !== null && classMap[classId]*/}
+              {/*  ? classMap[classId]*/}
+              {/*  : "Teacher"} */}
+              {classMap[classId]}
             </span>
           );
         },
@@ -185,7 +187,7 @@ const UserRecord = ({ users, role }: Props) => {
   });
 
   // ✅ Get unique categories for dropdown
-  const categories = Array.from(new Set(userData.map((t) => t.class_id)));
+  const categories = Array.from(new Set(userData.map((t) => t.class)));
   return (
     <div className=" bg-beige100  py-4">
       {/*<h2 className="text-grey900 text-3xl font-bold pb-8">*/}
@@ -209,20 +211,14 @@ const UserRecord = ({ users, role }: Props) => {
               defaultValue={categoryFilter}
             >
               <SelectTrigger className="w-40" id="categoryFilter">
-                <SelectValue placeholder="Category" />
+                <SelectValue placeholder="All Classes" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Roles</SelectItem>
                 {categories.map((cat, index) => (
-                  <SelectItem key={index} value={cat}>
-                    {classMap[cat]}
+                  <SelectItem key={index} value={cat.id}>
+                    {cat.name}
                   </SelectItem>
                 ))}
-                {/*{classes.map((cat, index) => (*/}
-                {/*  <SelectItem key={index} value={cat}>*/}
-                {/*    {cat}*/}
-                {/*  </SelectItem>*/}
-                {/*))}*/}
               </SelectContent>
             </Select>
           </div>
