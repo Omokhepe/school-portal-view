@@ -1,9 +1,8 @@
 import { create } from "zustand";
-import { devNull } from "node:os";
-import { Announcement } from "../types/timetable";
+import { AnnouncementType } from "../types/timetable";
 
 type State = {
-  active: Announcement[] | null;
+  active: AnnouncementType[] | null;
   loading: boolean;
   error: string | null;
   fetchActive: (data: any) => void;
