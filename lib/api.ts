@@ -1,6 +1,6 @@
 import axios from "axios";
 import { authStore } from "@store/authStore";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
