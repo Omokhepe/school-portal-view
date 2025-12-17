@@ -215,7 +215,7 @@ const UserRecord = ({ users, role }: Props) => {
               </SelectTrigger>
               <SelectContent>
                 {categories.map((cat, index) => (
-                  <SelectItem key={index} value={cat.id}>
+                  <SelectItem key={index} value={cat.name}>
                     {cat.name}
                   </SelectItem>
                 ))}
