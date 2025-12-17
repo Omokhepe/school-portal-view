@@ -60,7 +60,7 @@ const UserRecord = ({ users, role }: Props) => {
     return map;
   }, [classes]);
 
-  const handleEdit = (user) => {
+  const handleEdit = (user: UserType) => {
     console.log(user);
   };
   const handleDelete = (id: number) => {
