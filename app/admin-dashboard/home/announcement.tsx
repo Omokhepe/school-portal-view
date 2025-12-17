@@ -14,7 +14,7 @@ import { formatDate } from "@lib/helper";
 import PopoverMenu from "@components/PopoverMenu";
 import { useAuthStore } from "@store/authStore";
 import { toast } from "sonner";
-import { Announcement } from "../../../types/timetable";
+import { AnnouncementType } from "../../../types/timetable";
 import {
   Select,
   SelectContent,
@@ -27,17 +27,21 @@ import DeleteModal from "@components/DeleteModal";
 const Announcement: React.FC = () => {
   const token = useAuthStore((s) => s.token);
   const active = useAnnouncement((s) => s.active);
-
-  const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [selectedData, setSelectedData] = useState<Announcement | null>(null);
+  const [selectedData, setSelectedData] = useState<AnnouncementType | null>(
+    null,
+  );
   const [selectedStatus, setSelectedStatus] = useState("");
   const [buttonType, setButtonType] = useState("");
 
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+
+  const [form, setForm] = useState({
+    subject: "",
+    message: "",
+    start_date: "",
+    end_date: "",
+  });
 
   const statusActive =
     selectedStatus === ""
@@ -49,28 +53,31 @@ const Announcement: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedData) {
-      // console.log("selected", selectedData);
-      setSubject(selectedData.subject);
-      setMessage(selectedData.message);
-      setStartDate(selectedData.start_date.split("T")[0]);
-      setEndDate(selectedData.end_date.split("T")[0]);
-    }
+    if (!selectedData) return;
+
+    console.log(selectedData);
+
+    setForm({
+      subject: selectedData.subject,
+      message: selectedData.message,
+      start_date: selectedData.start_date.split("T")[0],
+      end_date: selectedData.end_date.split("T")[0],
+    });
   }, [selectedData]);
 
-  const handleAddAnnouncement = async (e) => {
+  const handleAddAnnouncement = async (e: any) => {
     e.preventDefault();
 
-    if (!subject || !message || !startDate || !endDate) {
+    if (!form.subject || !form.message || !form.start_date || !form.end_date) {
       toast.error("All fields are required");
       return;
     }
 
     const payload = {
-      subject,
-      message,
-      start_date: startDate,
-      end_date: endDate,
+      subject: form.subject,
+      message: form.message,
+      start_date: form.start_date,
+      end_date: form.end_date,
     };
 
     try {
@@ -79,26 +86,30 @@ const Announcement: React.FC = () => {
         toast.success("Announcement successfully added");
       }
       if (buttonType === "edit") {
+        if (!selectedData) return;
         await editAnnouncement(payload, selectedData.id, token);
         toast.success("Announcement Updated successfully");
       }
       if (buttonType === "delete") {
+        if (!selectedData) return;
         await deleteAnnouncement(selectedData.id, token);
         toast.success("Announcement Deleted successfully");
       }
 
       reset();
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
       toast.error(err.message || "Something went wrong");
     }
   };
 
   const reset = () => {
-    setSubject("");
-    setMessage("");
-    setStartDate("");
-    setEndDate("");
+    setForm({
+      subject: "",
+      message: "",
+      start_date: "",
+      end_date: "",
+    });
     setButtonType("");
     setOpen(false);
     setOpenDelete(false);
@@ -127,31 +138,39 @@ const Announcement: React.FC = () => {
             <Input
               type="text"
               name="subject"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
+              value={form.subject}
+              onChange={(e) => {
+                setForm({ ...form, subject: e.target.value });
+              }}
               placeholder="Subject"
             />
             <Textarea
               placeholder="Message"
-              value={message}
+              value={form.message}
               className="my-5"
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={(e) => {
+                setForm({ ...form, message: e.target.value });
+              }}
             />
             <div className="flex justify-end items-center gap-4">
               <div>
                 <label htmlFor="">Start Date</label>
                 <Input
                   type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
+                  value={form.start_date}
+                  onChange={(e) => {
+                    setForm({ ...form, start_date: e.target.value });
+                  }}
                 />
               </div>
               <div>
                 <label htmlFor="">End Date</label>
                 <Input
                   type="date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
+                  value={form.end_date}
+                  onChange={(e) => {
+                    setForm({ ...form, end_date: e.target.value });
+                  }}
                 />
               </div>
             </div>
@@ -221,7 +240,6 @@ const Announcement: React.FC = () => {
       <DeleteModal
         openDelete={openDelete}
         setOpenDelete={setOpenDelete}
-        onClose={() => setOpenDelete(false)}
         initialValues={
           selectedData
             ? {

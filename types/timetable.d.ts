@@ -19,7 +19,7 @@ export type TimetableEntry = {
   teacher?: { id: number; name: string };
 };
 
-export type Announcement = {
+export type AnnouncementType = {
   id: number;
   subject: string;
   message: string;
@@ -27,3 +27,15 @@ export type Announcement = {
   end_date: string;
   status: string;
 };
+
+export interface DeleteModalValues {
+  subject: string;
+  id: string | number;
+}
+
+export interface DeleteModalProps {
+  openDelete: boolean;
+  setOpenDelete: (state: boolean) => void;
+  initialValues: DeleteModalValues;
+  onConfirm: (values: React.MouseEvent<HTMLButtonElement>) => void;
+}

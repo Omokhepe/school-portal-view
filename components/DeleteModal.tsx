@@ -8,13 +8,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { DeleteModalProps } from "../types/timetable";
 
 const DeleteModal = ({
   onConfirm,
   openDelete,
   initialValues,
   setOpenDelete,
-}) => {
+}: DeleteModalProps) => {
   const [formData, setFormData] = useState(initialValues);
 
   useEffect(() => {
@@ -25,7 +26,7 @@ const DeleteModal = ({
     <Dialog open={openDelete} onOpenChange={setOpenDelete}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete {formData.name}</DialogTitle>
+          <DialogTitle>Delete {formData.subject}</DialogTitle>
           <DialogDescription>
             Are you sure you want to delete this Announcement Post? This Action
             cannot be reversed
