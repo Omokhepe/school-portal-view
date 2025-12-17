@@ -38,7 +38,7 @@ const UserRecord = ({ users, role }: Props) => {
   const classes = useAppStore((s) => s.classes);
   const [globalFilter, setGlobalFilter] = useState("");
   const searchParams = useSearchParams();
-  const filterCategory = searchParams.get("class_id");
+  const filterCategory = searchParams.get("class_name");
   const [categoryFilter, setCategoryFilter] = React.useState(
     filterCategory || "",
   );
@@ -117,17 +117,17 @@ const UserRecord = ({ users, role }: Props) => {
           }),
       },
       {
-        accessorKey: "class_id",
+        accessorKey: "class_name",
         header: "Class",
         cell: ({ row }) => {
-          const classId = row.original.class_id;
-          if (!classId) return;
+          const class_name = row.original.class.name;
+          // if (!classId) return;
           return (
             <span>
               {/*{classId !== null && classMap[classId]*/}
               {/*  ? classMap[classId]*/}
               {/*  : "Teacher"} */}
-              {classMap[classId]}
+              {class_name}
             </span>
           );
         },
@@ -215,7 +215,7 @@ const UserRecord = ({ users, role }: Props) => {
               </SelectTrigger>
               <SelectContent>
                 {categories.map((cat, index) => (
-                  <SelectItem key={index} value={cat.name}>
+                  <SelectItem key={index} value={`${cat.id}`}>
                     {cat.name}
                   </SelectItem>
                 ))}
