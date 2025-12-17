@@ -39,7 +39,7 @@ const UserRecord = ({ users, role }: Props) => {
   const searchParams = useSearchParams();
   const filterCategory = searchParams.get("class_id");
   const [categoryFilter, setCategoryFilter] = React.useState(
-    filterCategory || 0,
+    filterCategory || "",
   );
 
   // // ✅ only runs when data is ready
@@ -63,7 +63,7 @@ const UserRecord = ({ users, role }: Props) => {
   const handleEdit = (user) => {
     console.log(user);
   };
-  const handleDelete = (id) => {
+  const handleDelete = (id: number) => {
     console.log(id);
   };
 
@@ -162,10 +162,10 @@ const UserRecord = ({ users, role }: Props) => {
   const filteredData = useMemo(() => {
     let filtered = [...(userData || [])];
 
-    if (categoryFilter !== 0) {
+    if (categoryFilter !== "") {
       filtered = filtered.filter(
         // (item) => item.role.toLowerCase() === categoryFilter.toLowerCase(),
-        (item) => item.class_id === categoryFilter,
+        (item) => item.class_id === Number(categoryFilter),
       );
     }
     return filtered;
@@ -211,7 +211,7 @@ const UserRecord = ({ users, role }: Props) => {
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={0}>All Roles</SelectItem>
+                <SelectItem value="">All Roles</SelectItem>
                 {categories.map((cat, index) => (
                   <SelectItem key={index} value={cat}>
                     {classMap[cat]}

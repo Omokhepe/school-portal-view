@@ -15,7 +15,19 @@ import {
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 
-const MultiSelect = ({
+export type MultiSelectOption = {
+  label: string;
+  value: number;
+};
+
+export interface MultiSelectProps {
+  options: MultiSelectOption[];
+  value: number[];
+  onChange: React.Dispatch<React.SetStateAction<number[]>>;
+  placeholder?: string;
+}
+
+const MultiSelect: React.FC<MultiSelectProps> = ({
   options,
   value,
   onChange,
@@ -23,7 +35,7 @@ const MultiSelect = ({
 }) => {
   const [open, setOpen] = React.useState(false);
 
-  const toggleOption = (val) => {
+  const toggleOption = (val: number) => {
     if (value.includes(val)) {
       onChange(value.filter((v) => v !== val));
     } else {
