@@ -53,7 +53,11 @@ export const postAnnouncement = async (
   }
 };
 
-export const editAnnouncement = async (payload, id, token: string) => {
+export const editAnnouncement = async (
+  payload: AnnouncementPayload,
+  id: number,
+  token: string,
+) => {
   try {
     const res = await axios.put(
       `${process.env.NEXT_PUBLIC_API_URL}/announcements/${id}`,
@@ -75,7 +79,7 @@ export const editAnnouncement = async (payload, id, token: string) => {
     throw new Error(err.message || err);
   }
 };
-export const deleteAnnouncement = async (id, token: string) => {
+export const deleteAnnouncement = async (id: number, token: string) => {
   console.log("here", id, token);
   try {
     const res = await axios.delete(
