@@ -5,8 +5,7 @@ import { persist } from "zustand/middleware";
 import { ClassSub } from "../types/class";
 import { createIndexedDBStorage } from "@store/indexedDBStorage";
 import { SubjectType, UserType } from "../types/user";
-
-type DataKey = "classes" | "subjects" | "students" | "teachers" | "users";
+import { DataKey } from "../types/auth";
 
 type AppState = {
   classes: ClassSub;

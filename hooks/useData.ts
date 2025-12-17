@@ -4,9 +4,10 @@
 import { useEffect } from "react";
 import { loadResource } from "@actions/loader";
 import useAppStore from "@store/appStore";
+import { DataKey } from "../types/auth";
 
-export function createResourceHook(key) {
-  return function useResource(token: string | null) {
+export function createResourceHook(key: DataKey) {
+  return function useResource(token: string) {
     const data = useAppStore((s) => s[key]);
     const loading = useAppStore((s) => s.inFlight[key]);
 
@@ -20,7 +21,7 @@ export function createResourceHook(key) {
 
 export async function refreshResources(
   keys: Array<"users" | "students" | "classes" | "teachers" | "subjects">,
-  token: string | null,
+  token: string,
 ) {
   const promises = keys.map((key) => loadResource(key, token, true));
   return Promise.all(promises);

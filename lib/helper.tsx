@@ -58,16 +58,16 @@ export const groupClassesByLevel = (classes: ClassSub) => {
   }, {});
 };
 
-// Count students in a specific class
-export const getClassStudentCount = (students, classId) => {
-  return students.filter((s) => s.class_id === classId).length;
-};
-
-// Count students in an entire level (sum of all classes inside)
-export const getLevelStudentCount = (students, grouped, level) => {
-  const classIds = grouped[level].map((c) => c.id);
-  return students.filter((s) => classIds.includes(s.class_id)).length;
-};
+// // Count students in a specific class
+// export const getClassStudentCount = (students, classId) => {
+//   return students.filter((s) => s.class_id === classId).length;
+// };
+//
+// // Count students in an entire level (sum of all classes inside)
+// export const getLevelStudentCount = (students, grouped, level) => {
+//   const classIds = grouped[level].map((c) => c.id);
+//   return students.filter((s) => classIds.includes(s.class_id)).length;
+// };
 
 export function formatDate(dateStr: string) {
   const d = new Date(dateStr);
