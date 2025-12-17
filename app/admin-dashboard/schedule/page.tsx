@@ -9,7 +9,7 @@ import { useAuthStore } from "@store/authStore";
 const Page = () => {
   const { classes, subjects, teachers } = useAppStore();
   const user = useAuthStore((s) => s.user);
-  const [studentClass, setStudentClass] = useState(0);
+  const [studentClass, setStudentClass] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
 
   if (!classes || Object.keys(classes).length === 0) {

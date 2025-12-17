@@ -29,18 +29,18 @@ const TeacherRecord = () => {
               className="w-100 bg-white shadow rounded-lg h-70 flex flex-col items-center justify-center px-5"
             >
               <div className="flex self-end">
-                <PopoverMenu
-                  onEdit={() => {
-                    setSelectedData(teacher);
-                    setButtonType("edit");
-                    setOpen(true);
-                  }}
-                  onDelete={() => {
-                    setSelectedData(teacher);
-                    setButtonType("delete");
-                    setOpenDelete(true);
-                  }}
-                />
+                {/*<PopoverMenu*/}
+                {/*  onEdit={() => {*/}
+                {/*    setSelectedData(teacher);*/}
+                {/*    setButtonType("edit");*/}
+                {/*    setOpen(true);*/}
+                {/*  }}*/}
+                {/*  onDelete={() => {*/}
+                {/*    setSelectedData(teacher);*/}
+                {/*    setButtonType("delete");*/}
+                {/*    setOpenDelete(true);*/}
+                {/*  }}*/}
+                {/*/>*/}
               </div>
 
               <div className="flex flex-row w-full justify-start items-center gap-3">

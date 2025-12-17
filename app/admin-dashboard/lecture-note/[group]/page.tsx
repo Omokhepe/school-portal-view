@@ -15,7 +15,7 @@ const Page = () => {
   const { group } = useParams<{ group: string }>();
 
   const groupSubject = subjects.filter((item) => item.level_group === group);
-  console.log(subjects, groupSubject);
+  console.log(subjects, groupSubject, "groupSubj");
 
   useEffect(() => {
     if (!hydrated) return;

@@ -5,11 +5,18 @@ import { useAuthStore } from "@store/authStore";
 import TimetableGrid from "@/admin-dashboard/schedule/components/TimetableGrid";
 import { useTeachers } from "../../../../hooks/useData";
 import useAppStore from "@store/appStore";
+import { Classes, ClassSub } from "../../../../types/class";
+import { SubjectType } from "../../../../types/user";
 
-const TimetableCell = ({ classes, subjects }) => {
+interface Props {
+  classes: ClassSub;
+  subjects: SubjectType[];
+}
+
+const TimetableCell = ({ classes, subjects }: Props) => {
   // const [subjects, setSubjects] = useState([]);
   const token = useAuthStore((s) => s.token);
-  const [studentClass, setStudentClass] = useState(0);
+  const [studentClass, setStudentClass] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
   const teachers = useAppStore((s) => s.teachers);
 

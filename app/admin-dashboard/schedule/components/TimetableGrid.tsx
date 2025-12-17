@@ -18,14 +18,14 @@ export const days = [
 ] as const;
 
 type Props = {
-  classId: number;
+  classId: string;
   subjects: SubjectType[];
   teachers: UserType[];
   role?: string;
 };
 
 const TimetableGrid = ({ classId, subjects, teachers, role }: Props) => {
-  const { entries, refresh } = useTimetable(classId);
+  const { entries, refresh } = useTimetable(Number(classId));
   const { teacherEntries, refreshData } = useTeacherTimetable();
   const [editorOpen, setEditorOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<any>(null);

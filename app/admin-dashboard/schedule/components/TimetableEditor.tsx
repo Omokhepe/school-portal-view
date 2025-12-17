@@ -19,7 +19,7 @@ type Props = {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   entry?: TimetableEntry | null;
-  classId: number;
+  classId: string;
   subjects: SubjectType[];
   teachers: UserType[];
   onSaved: () => void;

@@ -3,13 +3,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { getAllNotes } from "@actions/user";
 import { useRouter } from "next/navigation";
+import { SubjectType } from "../../../../types/user";
 
-// interface Props {
-//   subject: SubjectType[];
-// }
-// interface State {
-//   section:Props;
-// }
+interface Props {
+  classSubjects: SubjectType[];
+  token: string;
+}
 
 interface NoteSummary {
   subject_id: number;
@@ -19,7 +18,7 @@ interface NoteSummary {
   note_id: string;
 }
 
-const SummaryPage = ({ classSubjects, token }) => {
+const SummaryPage = ({ classSubjects, token }: Props) => {
   const router = useRouter();
   const [notes, setNotes] = useState<NoteSummary[]>([]);
 
