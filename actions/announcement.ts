@@ -1,5 +1,6 @@
 import { useAnnouncement } from "@store/announcement";
 import axios from "axios";
+import { AnnouncementPayload } from "../types/class";
 
 export const fetchActiveAnnouncements = async () => {
   const store = useAnnouncement.getState();
@@ -25,7 +26,10 @@ export const fetchActiveAnnouncements = async () => {
   }
 };
 
-export const postAnnouncement = async (payload, token: string) => {
+export const postAnnouncement = async (
+  payload: AnnouncementPayload,
+  token: string,
+) => {
   try {
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/announcements`,

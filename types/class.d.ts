@@ -28,3 +28,10 @@ export type FormDataType = {
     image?: File | null;
   }>;
 };
+
+type AnnouncementPayload = {
+  subject: string;
+  message: string;
+  start_date: string;
+  end_date: string;
+};
