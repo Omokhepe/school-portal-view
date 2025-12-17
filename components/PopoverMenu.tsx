@@ -7,7 +7,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { EllipsisVertical } from "lucide-react";
 
-const PopoverMenu = ({ onEdit, onDelete }) => {
+interface Props {
+  onEdit?: () => void;
+  onDelete?: () => void;
+}
+
+const PopoverMenu = ({ onEdit, onDelete }: Props) => {
   return (
     <Popover>
       <PopoverTrigger>
