@@ -45,7 +45,7 @@ export default function CreateNote() {
   const [studentClass, setStudentClass] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
   const [selectedSubject, setSelectedSubject] = useState<number | null>(null);
-  const [selectedWeeks, setSelectedWeeks] = useState<number[]>([]);
+  const [selectedWeeks, setSelectedWeeks] = useState<string[]>([]);
   const [term, setTerm] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sections, setSections] = useState<Section[]>([]);
