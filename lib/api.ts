@@ -1,6 +1,6 @@
 import axios from "axios";
-import { authStore, useAuthStore } from "@store/authStore";
-import { redirect } from "next/navigation";
+import { authStore } from "@store/authStore";
+// import { redirect } from "next/navigation";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -19,9 +19,16 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     const status = error?.response?.status;
-    if (status === 401 || status === 403) {
+
+    if (status === 401 || status === 403 || status === 404) {
       authStore.getState().logout();
-      redirect("/login");
+      // redirect("/login");
+      throw {
+        unauthorized: true,
+        message: "Unauthorized",
+        status,
+        details: error?.response?.data || null,
+      };
     }
     return Promise.reject(error);
   },

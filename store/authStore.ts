@@ -3,9 +3,10 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { User } from "../types/auth";
+import useAppStore from "@store/appStore";
 
 interface AuthState {
-  token: string | null;
+  token: string;
   user: User | null;
   login: (data: any) => void;
   logout: () => void;
@@ -17,13 +18,16 @@ interface AuthState {
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
-      token: null,
+      token: "",
       user: null,
       hydrated: false,
 
       login: (data) => set({ token: data.token, user: data.user }),
 
-      logout: () => set({ token: null, user: null }),
+      logout: () => {
+        useAppStore.getState().clearAll();
+        set({ token: "", user: null });
+      },
       setHydrated: (hydrated) => set({ hydrated }),
     }),
     {

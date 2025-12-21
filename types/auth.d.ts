@@ -12,3 +12,10 @@ export interface User {
   must_change_password: number;
   class_id: number;
 }
+
+export type DataKey =
+  | "classes"
+  | "subjects"
+  | "students"
+  | "teachers"
+  | "users";

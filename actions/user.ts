@@ -1,90 +1,8 @@
 "use server";
 
-export const getAllUsers = async (token: string) => {
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
-      cache: "no-store",
-    });
-    if (response.status === 401) {
-      throw new Error("unauthorized");
-    }
-    if (!response.ok) {
-      throw new Error(`Failed to fetch students: ${response.status}`);
-    }
+import axios from "axios";
 
-    const data = await response.json();
-    return data;
-  } catch (err: any) {
-    console.log(err);
-    throw new Error(err);
-  }
-};
-export const getAllStudents = async (token: string) => {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/students`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-        cache: "no-store",
-      },
-    );
-    if (response.status === 401) {
-      throw new Error("unauthorized");
-    }
-    if (!response.ok) {
-      throw new Error(`Failed to fetch students: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (err: any) {
-    console.log(err);
-    throw new Error(err);
-  }
-};
-
-export const getAllTeacher = async (token: string) => {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/teachers`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-        cache: "no-store",
-      },
-    );
-    if (!response.ok) {
-      throw new Error(`Failed to fetch teachers: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (err: any) {
-    console.log(err);
-    throw new Error(err);
-  }
-};
-export const getClasses = async (token: string) => {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/classes`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
-      cache: "no-store",
-    });
-    const data = await res.json();
-    console.log(data, "here data");
-    return data;
-  } catch (err: any) {
-    console.log(err);
-    throw new Error(err);
-  }
-};
-
-export const addUser = async (token: string, payload: any) => {
-  console.log(payload, "payload");
+export const addUser = async (token: string | null, payload: any) => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
       method: "POST",
@@ -97,14 +15,60 @@ export const addUser = async (token: string, payload: any) => {
     });
     if (!res.ok) {
       const errorText = await res.text();
-      throw new Error(`Failed to create user: ${res.status} - ${errorText}`);
+      // throw new Error(`Failed to create user: ${res.status} - ${errorText}`);
+      throw new Error(errorText);
     }
 
+    // await loadResource("users", true);
     const data = await res.json();
+
     console.log("Success: ", data);
     return data;
   } catch (err: any) {
     console.log(err);
+    throw new Error(err.message || err);
+  }
+};
+
+export const addNote = async (token: string, payload: any) => {
+  console.log(payload, "payload");
+
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/notes`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      },
+    );
+    const data = res.data;
+    // await fetchActiveAnnouncements();
+
+    console.log("created note", data);
+    return data;
+  } catch (err: any) {
+    console.error(err);
+    throw new Error(err.message || err);
+  }
+};
+
+export const getAllNotes = async (token: string | null) => {
+  try {
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/notes`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
+    const data = res.data;
+
+    console.log("get notes", data);
+    return data;
+  } catch (err: any) {
+    console.error(err);
     throw new Error(err.message || err);
   }
 };
