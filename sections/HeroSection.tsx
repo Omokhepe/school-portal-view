@@ -18,13 +18,13 @@ const HeroSection = () => {
             Empowering students with knowledge, character, and excellence.
           </p>
           <div>
-            <button className="px-6 py-3 text-white outline-2 outline-offset-2 outline-blue-700 hover:bg-blue-700 hover:outline-0 rounded-lg font-medium mr-7">
+            <button className="px-6 py-3 text-white outline-2 outline-offset-2 outline-yellow-900 hover:bg-yellow-900 hover:outline-0 rounded-lg font-medium mr-7">
               Enroll Now
             </button>
-            <button className="px-6 py-3 text-white outline-2 outline-offset-2 outline-blue-700 hover:bg-blue-700 hover:outline-0 rounded-lg font-medium mr-7">
+            <button className="px-6 py-3 text-white outline-2 outline-offset-2 outline-yellow-900 hover:bg-yellow-900 hover:outline-0 rounded-lg font-medium mr-7">
               Learn More
             </button>
-            <button className="px-6 py-3 text-white outline-2 outline-offset-2 outline-blue-700 hover:bg-blue-700 hover:outline-0 rounded-lg font-medium">
+            <button className="px-6 py-3 text-white outline-2 outline-offset-2 outline-yellow-900 hover:bg-yellow-900 hover:outline-0 rounded-lg font-medium">
               Take A virtual Tour
             </button>
           </div>
