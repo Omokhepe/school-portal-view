@@ -367,7 +367,7 @@ const UserForm: React.FC<UserFormProps> = ({ type, setShowForm, user }) => {
                   </NativeSelectOptGroup>
 
                   <NativeSelectOptGroup label="Secondary">
-                    {[...(classes.jss || []), ...(classes.ss || [])].map(
+                    {[...(classes.jss || []), ...(classes.sss || [])].map(
                       (c) => (
                         <NativeSelectOption key={c.id} value={c.id}>
                           {c.name}
