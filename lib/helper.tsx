@@ -43,6 +43,8 @@ export async function apiFetch<T = any>(
   }
 }
 
+export const normalizeTime = (t: string) => t.slice(0, 5);
+
 // Group classes by their level
 // export const groupClassesByLevel = (classes: ClassSub) => {
 //   const allClasses = [

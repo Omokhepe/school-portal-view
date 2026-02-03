@@ -1,17 +1,20 @@
+"use client";
+
 import Navbar from "../components/Navbar";
 import HeroSection from "../sections/HeroSection";
 import AboutSection from "../sections/aboutSection";
 import ProgramSection from "../sections/programSection";
 import Footer from "../components/footer";
+import Preloader from "../sections/homeLoader";
 
 export default function Home() {
   return (
-    // <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
     <div>
+      <Preloader />
       <Navbar />
       <HeroSection />
-      <AboutSection />
       <ProgramSection />
+      <AboutSection />
       <Footer />
     </div>
   );

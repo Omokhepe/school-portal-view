@@ -28,6 +28,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowBigLeft, ArrowBigRight, Pencil, Trash } from "lucide-react";
 import useAppStore from "@store/appStore";
 import { UserType } from "../types/user";
+import UserForm from "@components/userForm";
 
 interface Props {
   users: UserType[];
@@ -42,27 +43,35 @@ const UserRecord = ({ users, role }: Props) => {
   const [categoryFilter, setCategoryFilter] = React.useState(
     filterCategory || "",
   );
-
+  const [showForm, setShowForm] = useState(false);
   // // ✅ only runs when data is ready
   const userData = useMemo(() => users || [], [users]);
 
-  const classMap = useMemo(() => {
-    const map: Record<number, string> = {};
-
-    if (!classes) return map;
-
-    // Flatten all class arrays from different levels
-    Object.values(classes)
-      .flat()
-      .forEach((cls: any) => {
-        map[cls.id] = cls.name; // or cls.text depending on API
-      });
-
-    return map;
-  }, [classes]);
+  // const classMap = useMemo(() => {
+  //   const map: Record<number, string> = {};
+  //
+  //   if (!classes) return map;
+  //
+  //   // Flatten all class arrays from different levels
+  //   Object.values(classes)
+  //     .flat()
+  //     .forEach((cls: any) => {
+  //       map[cls.id] = cls.name; // or cls.text depending on API
+  //     });
+  //
+  //   return map;
+  // }, [classes]);
 
   const handleEdit = (user: UserType) => {
-    console.log(user);
+    setShowForm(() => true);
+
+    console.log(user, showForm, "clicked on edit");
+
+    return (
+      <>
+        <UserForm type="student" setShowForm={setShowForm} user={user} />
+      </>
+    );
   };
   const handleDelete = (id: number) => {
     console.log(id);
@@ -120,16 +129,9 @@ const UserRecord = ({ users, role }: Props) => {
         accessorKey: "class_name",
         header: "Class",
         cell: ({ row }) => {
-          const class_name = row.original.class.name;
+          const class_name = row.original.school_class.name;
           // if (!classId) return;
-          return (
-            <span>
-              {/*{classId !== null && classMap[classId]*/}
-              {/*  ? classMap[classId]*/}
-              {/*  : "Teacher"} */}
-              {class_name}
-            </span>
-          );
+          return <span>{class_name}</span>;
         },
       },
       {
@@ -141,7 +143,9 @@ const UserRecord = ({ users, role }: Props) => {
           return (
             <div className="flex gap-2">
               <button
-                onClick={() => handleEdit(user)}
+                onClick={() => {
+                  handleEdit(user);
+                }}
                 className="px-2 py-1 text-sm text-yellow-900  rounded hover:text-yellow-700"
               >
                 <Pencil />
@@ -158,7 +162,7 @@ const UserRecord = ({ users, role }: Props) => {
         },
       },
     ],
-    [classMap],
+    [],
   );
 
   // ✅ Filtering by category and sort logic
@@ -187,7 +191,8 @@ const UserRecord = ({ users, role }: Props) => {
   });
 
   // ✅ Get unique categories for dropdown
-  const categories = Array.from(new Set(userData.map((t) => t.class)));
+  const categories = Array.from(new Set(userData.map((t) => t.school_class)));
+
   return (
     <div className=" bg-beige100  py-4">
       {/*<h2 className="text-grey900 text-3xl font-bold pb-8">*/}

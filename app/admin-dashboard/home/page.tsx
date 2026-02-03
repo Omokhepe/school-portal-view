@@ -7,6 +7,7 @@ import SummaryCard from "@/admin-dashboard/home/summaryCard";
 import Announcement from "@/admin-dashboard/home/announcement";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@store/authStore";
+import Syllabus from "@/admin-dashboard/home/syllabus";
 
 const Page = () => {
   const router = useRouter();
@@ -30,6 +31,7 @@ const Page = () => {
           <SummaryCard />
           <Announcement />
         </div>
+        {/*<Syllabus />*/}
       </div>
     </Protected>
   );

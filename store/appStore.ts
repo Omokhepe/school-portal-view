@@ -38,7 +38,7 @@ export const useAppStore = create<AppState>()(
         creche: [],
         primary: [],
         jss: [],
-        ss: [],
+        sss: [],
       },
 
       subjects: [],
@@ -91,7 +91,7 @@ export const useAppStore = create<AppState>()(
             creche: [],
             primary: [],
             jss: [],
-            ss: [],
+            sss: [],
           },
 
           subjects: [],

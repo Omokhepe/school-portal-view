@@ -26,7 +26,7 @@ const TimetableCell = ({ classes, subjects }: Props) => {
     ...classes.creche,
     ...classes.primary,
     ...classes.jss,
-    ...classes.ss,
+    ...classes.sss,
   ];
   const classLookup = Object.fromEntries(
     allClasses.map((c) => [String(c.id), c]),
@@ -65,7 +65,7 @@ const TimetableCell = ({ classes, subjects }: Props) => {
             ))}
           </optgroup>
           <optgroup label="Secondary">
-            {[...classes.jss, ...classes.ss].map((c) => (
+            {[...classes.jss, ...classes.sss].map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
               </option>

@@ -58,7 +58,7 @@ export default function CreateNote() {
     ...classes.creche,
     ...classes.primary,
     ...classes.jss,
-    ...classes.ss,
+    ...classes.sss,
   ];
 
   const classLookup = Object.fromEntries(
@@ -209,7 +209,7 @@ export default function CreateNote() {
             </NativeSelectOptGroup>
 
             <NativeSelectOptGroup label="Secondary">
-              {[...classes.jss, ...classes.ss].map((item) => (
+              {[...classes.jss, ...classes.sss].map((item) => (
                 <NativeSelectOption key={item.id} value={item.id}>
                   {item.name}
                 </NativeSelectOption>

@@ -3,7 +3,7 @@ import { Classes } from "./class";
 export interface UserType {
   address: string;
   class_id?: number;
-  class: Classes;
+  school_class: Classes;
   // course?: any;
   created_at: string;
   date_of_birth: string;

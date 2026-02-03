@@ -8,6 +8,7 @@ import {
 } from "../../../../hooks/useTimetable";
 import TimetableEditor from "@/admin-dashboard/schedule/components/TimetableEditor";
 import { SubjectType, UserType } from "../../../../types/user";
+import { normalizeTime } from "@lib/helper";
 
 export const days = [
   "monday",
@@ -26,42 +27,69 @@ type Props = {
 
 const TimetableGrid = ({ classId, subjects, teachers, role }: Props) => {
   const { entries, refresh } = useTimetable(Number(classId));
-  const { teacherEntries, refreshData } = useTeacherTimetable();
+  const { teacherEntries } = useTeacherTimetable();
   const [editorOpen, setEditorOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<any>(null);
 
+  // console.log(entries, "here entry");
+
   // index entries for quick lookup by day+start
+  // const map = useMemo(() => {
+  //   // const m: Record<string, any> = {};
+  //   // entries.forEach((e) => {
+  //   //   m[`${e.day}-${e.start_time}`] = e;
+  //   // });
+  //   // return m;
+  //   const m: Record<string, { type: "entry" | "break"; data: any }> = {};
+  //
+  //   // Add timetable entries
+  //   if (role === "teacher") {
+  //     teacherEntries.forEach((e) => {
+  //       const key = `${e.day}-${e.start_time}`;
+  //       m[key] = { type: "entry", data: e };
+  //     });
+  //   } else {
+  //     entries.forEach((e) => {
+  //       const key = `${e.day}-${e.start_time}`;
+  //       m[key] = { type: "entry", data: e };
+  //     });
+  //   }
+  //
+  //   // Add fixed breaks
+  //   days.forEach((day) => {
+  //     FIXED_BREAKS.forEach((b) => {
+  //       const key = `${day}-${b.start}`;
+  //       m[key] = { type: "break", data: b };
+  //     });
+  //   });
+  //
+  //   console.log(m, "here entry");
+  //
+  //   return m;
+  // }, [entries, role, teacherEntries]);
+
   const map = useMemo(() => {
-    // const m: Record<string, any> = {};
-    // entries.forEach((e) => {
-    //   m[`${e.day}-${e.start_time}`] = e;
-    // });
-    // return m;
     const m: Record<string, { type: "entry" | "break"; data: any }> = {};
 
-    // Add timetable entries
-    if (role === "teacher") {
-      teacherEntries.forEach((e) => {
-        const key = `${e.day}-${e.start_time}`;
-        m[key] = { type: "entry", data: e };
-      });
-    } else {
-      entries.forEach((e) => {
-        const key = `${e.day}-${e.start_time}`;
-        m[key] = { type: "entry", data: e };
-      });
-    }
-
-    // Add fixed breaks
+    // Breaks (low priority)
     days.forEach((day) => {
       FIXED_BREAKS.forEach((b) => {
-        const key = `${day}-${b.start}`;
+        const key = `${day}-${normalizeTime(b.start)}`;
         m[key] = { type: "break", data: b };
       });
     });
 
+    // Entries (high priority)
+    const source = role === "teacher" ? teacherEntries : entries;
+
+    source.forEach((e) => {
+      console.log(e, "checking e dark hoho");
+      const key = `${e.day}-${normalizeTime(e.start_time)}`;
+      m[key] = { type: "entry", data: e };
+    });
+
     return m;
-  }, [entries, role, teacherEntries]);
+  }, [entries, teacherEntries, role]);
 
   const openEditorFor = (day: string, slot: { start: string; end: string }) => {
     const existing = map[`${day}-${slot.start}`] ?? null;
@@ -69,10 +97,13 @@ const TimetableGrid = ({ classId, subjects, teachers, role }: Props) => {
       existing
         ? existing
         : {
-            class_id: classId,
-            day,
-            start_time: slot.start,
-            end_time: slot.end,
+            type: "empty",
+            data: {
+              class_id: classId,
+              day,
+              start_time: slot.start,
+              end_time: slot.end,
+            },
           },
     );
     setEditorOpen(true);
@@ -99,7 +130,7 @@ const TimetableGrid = ({ classId, subjects, teachers, role }: Props) => {
                 {days.map((day) => {
                   const key = `${day}-${slot.start}`;
                   const entry = map[key];
-                  console.log(entry, "hey God oo");
+                  // console.log(entry, "hey God oo");
                   return (
                     <div
                       key={key}
@@ -159,7 +190,7 @@ const TimetableGrid = ({ classId, subjects, teachers, role }: Props) => {
         teachers={teachers}
         onSaved={() => {
           refresh();
-          refresh();
+          // refresh();
         }} // refresh after save
       />
     </div>

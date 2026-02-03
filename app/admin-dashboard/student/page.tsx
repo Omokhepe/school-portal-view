@@ -6,6 +6,7 @@ import adminBG from "@assets/images/adminBG.png";
 import AddStudent from "@/admin-dashboard/student/addStudent";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@store/authStore";
+import { Button } from "@/components/ui/button";
 
 const Page = () => {
   const router = useRouter();
@@ -27,6 +28,7 @@ const Page = () => {
       >
         <h3 className="font-bold font-mono text-2xl pb-4">Student</h3>
         <AddStudent />
+        <Button>Batch Upload</Button>
       </div>
     </Protected>
   );

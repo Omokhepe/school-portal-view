@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/native-select";
 import { refreshResources } from "../hooks/useData";
 import { CircleX } from "lucide-react";
+import { UserType } from "../types/user";
 
 // --------------------
 // ErrorText
@@ -37,6 +38,7 @@ const ErrorText = ({ message }: { message?: string }) =>
 interface UserFormProps {
   type: "student" | "teacher";
   setShowForm: (showForm: boolean) => void;
+  user?: UserType;
 }
 
 interface FormErrors {
@@ -46,7 +48,7 @@ interface FormErrors {
 // --------------------
 // Component
 // --------------------
-const UserForm: React.FC<UserFormProps> = ({ type, setShowForm }) => {
+const UserForm: React.FC<UserFormProps> = ({ type, setShowForm, user }) => {
   const token = useAuthStore((s) => s.token);
   const classes = useAppStore((s) => s.classes);
 

@@ -1,11 +1,12 @@
 import React from "react";
 import useAppStore from "@store/appStore";
+import Syllabus from "@/admin-dashboard/home/syllabus";
 
 const SummaryCard = () => {
   const { students, teachers } = useAppStore();
 
   return (
-    <>
+    <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-center mt-5">
         {/*{stats.map((cls) => (*/}
         <div
@@ -31,7 +32,10 @@ const SummaryCard = () => {
           <p className="text-sm text-gray-500">Total Teachers</p>
         </div>
       </div>
-    </>
+      <div>
+        <Syllabus />
+      </div>
+    </div>
   );
 };
 

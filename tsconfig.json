@@ -23,7 +23,7 @@
       "@/*": ["./app/*"],
       "@public/*": ["./public/*"],
       "@components/*": ["./components/*"],
-      "@hooks/*": ["./src/hooks/*"],
+      "@hooks/*": ["./hooks/*"],
       "@styles/*": ["./styles/*"],
       "@assets/*": ["./public/assets/*"],
       "@store/*": ["store/*"],

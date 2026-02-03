@@ -11,9 +11,10 @@ import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@store/authStore";
 import { TimetableEntry } from "../../../../types/timetable";
 import { addSchedule } from "@actions/timetable";
-import { apiFetch } from "@lib/helper";
+import { apiFetch, formatDate, normalizeTime } from "@lib/helper";
 import { toast } from "sonner";
 import { SubjectType, UserType } from "../../../../types/user";
+import axios from "axios";
 
 type Props = {
   open: boolean;
@@ -48,18 +49,21 @@ const TimetableEditor = ({
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  console.log(entry, "checking this");
+
   // helper updater
   const update = (field: string, value: any) =>
     setForm((prev) => ({ ...prev, [field]: value }));
 
   const resetForm = useCallback(() => {
     if (entry) {
+      const { day, start_time, end_time, subject_id, teacher_id } = entry.data;
       setForm({
-        day: entry.day,
-        start: entry.start_time,
-        end: entry.end_time,
-        subjectId: entry.subject_id,
-        teacherId: entry.teacher_id ?? 0,
+        day: day,
+        start: start_time,
+        end: end_time,
+        subjectId: subject_id,
+        teacherId: teacher_id ?? 0,
       });
     } else {
       setForm(defaultState);
@@ -92,16 +96,29 @@ const TimetableEditor = ({
       subject_id: Number(form.subjectId),
       teacher_id: form.teacherId ? Number(form.teacherId) : null,
       day: form.day,
-      start_time: form.start,
-      end_time: form.end,
+      start_time: normalizeTime(form.start),
+      end_time: normalizeTime(form.end),
     };
 
+    console.log("payload", payload);
+
     try {
-      if (entry?.id) {
-        await apiFetch(`/timetable/${entry.id}`, token, {
-          method: "PUT",
-          body: JSON.stringify(payload),
-        });
+      if (entry?.data.id) {
+        // await apiFetch(`/timetable/${entry.data.id}`, token, {
+        //   method: "PUT",
+        //   body: JSON.stringify(payload),
+        // });
+        const res = await axios.put(
+          `${process.env.NEXT_PUBLIC_API_URL}/timetable/${entry.data.id}`,
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+            },
+          },
+        );
+        console.log(res, "here rese to see it goes");
       } else {
         await addSchedule(token, payload);
       }
@@ -111,7 +128,7 @@ const TimetableEditor = ({
       onOpenChange(false);
     } catch (err: any) {
       const msg = err?.error ?? err?.data?.message ?? "Save failed";
-      toast.error(`Failed to save schedule: ${msg}`);
+      toast.error(`Failed to save schedule: ${msg} ${err}`);
       setError(msg);
     } finally {
       setLoading(false);
@@ -119,7 +136,7 @@ const TimetableEditor = ({
   };
 
   const remove = async () => {
-    if (!entry?.id) return;
+    if (!entry?.data.id) return;
     setLoading(true);
 
     try {
@@ -137,7 +154,9 @@ const TimetableEditor = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>{entry ? "Edit slot" : "Add slot"}</DialogTitle>
+          <DialogTitle>
+            {entry?.type === "entry" ? "Edit slot" : "Add slot"}
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-3">
@@ -221,14 +240,14 @@ const TimetableEditor = ({
 
           {/* Actions */}
           <div className="flex gap-2 justify-end">
-            {entry?.id && (
+            {entry?.data.id && (
               <Button variant="destructive" onClick={remove} disabled={loading}>
                 Delete
               </Button>
             )}
 
             <Button onClick={save} disabled={loading}>
-              {entry?.id ? "Update" : "Save"}
+              {entry?.data.id ? "Update" : "Save"}
             </Button>
           </div>
         </div>

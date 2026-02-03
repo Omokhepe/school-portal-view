@@ -8,6 +8,10 @@ export type Day =
   | "sunday";
 
 export type TimetableEntry = {
+  type: string;
+  data: TimetableData;
+};
+export type TimetableData = {
   id: number;
   class_id: number;
   subject_id: number;
@@ -39,3 +43,18 @@ export interface DeleteModalProps {
   initialValues: DeleteModalValues;
   onConfirm: (values: React.MouseEvent<HTMLButtonElement>) => void;
 }
+
+// src/constants/timetable.ts
+export const DAYS = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+] as const;
+
+export type DayType = (typeof DAYS)[number];
+
+export type TimetableMapped =
+  | { type: "entry"; data: TimetableEntry }
+  | { type: "break"; data: BreakType };

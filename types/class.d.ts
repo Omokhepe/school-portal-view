@@ -7,7 +7,7 @@ interface ClassSub {
   creche: Classes[];
   primary: Classes[];
   jss: Classes[];
-  ss: Classes[];
+  sss: Classes[];
 }
 
 type Classes = {
