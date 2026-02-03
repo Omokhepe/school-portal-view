@@ -26,7 +26,8 @@ const VisionSection = () => {
             <p className="text-gray-600 leading-relaxed">
               To Raise Learners with the FEAR of God in a Friendly Environment,
               Equip with Skills and Value Necessary for Success in an Ever
-              Changing world, with Commitments to EXCELLENCE through Knowledge
+              Changing world, with Commitments to{" "}
+              <span className="font-bold">EXCELLENCE</span> through Knowledge
             </p>
           </div>
 

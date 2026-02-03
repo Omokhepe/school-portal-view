@@ -6,6 +6,7 @@ import AboutSection from "../sections/aboutSection";
 import ProgramSection from "../sections/programSection";
 import Footer from "../components/footer";
 import Preloader from "../sections/homeLoader";
+import ImageGallery from "../sections/imageGallery";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <Navbar />
       <HeroSection />
       <ProgramSection />
+      <ImageGallery />
       <AboutSection />
       <Footer />
     </div>

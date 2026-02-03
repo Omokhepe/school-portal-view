@@ -11,6 +11,11 @@ import juniorImg from "@assets/images/junior.jpeg";
 import stemImg from "@assets/images/stem.png";
 import businessImg from "@assets/images/business.png";
 import artsImg from "@assets/images/arts.png";
+// import img1 from "@assets/images/1.JPG";
+import img2 from "@assets/images/2.jpg";
+import img3 from "@assets/images/3.jpg";
+import img4 from "@assets/images/4.jpg";
+import img5 from "@assets/images/5.jpg";
 
 export const navLinks = [
   { href: "/", label: "Home" },
@@ -289,4 +294,31 @@ export const programsList = [
       "Inspire creativity and critical thinking through art, music, and literature.",
     bgImg: artsImg,
   },
+];
+
+export const imagesFile = [
+  // { id: 1, src: { img1 }, alt: "Students learning" },
+  { id: 2, src: img2, alt: "Classroom activity" },
+  { id: 3, src: img3, alt: "School environment" },
+  { id: 4, src: img4, alt: "Outdoor learning" },
+  { id: 5, src: img5, alt: "Creative session" },
+  // { id: 6, src: "/gallery/6.jpg", alt: "Group collaboration" },
+];
+
+export const albums = [
+  {
+    title: "Our Color Week",
+    date: "March 2025",
+    images: [img2, img3, img4, img5],
+  },
+  // {
+  //   title: "Inter-House Sports Day",
+  //   date: "March 2025",
+  //   images: [img2, img3],
+  // },
+  // {
+  //   title: "Graduation Ceremony",
+  //   date: "February 2025",
+  //   images: [img4, img5],
+  // },
 ];

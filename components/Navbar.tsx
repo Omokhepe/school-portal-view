@@ -49,7 +49,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo + nav items */}
           <div className="flex lg:flex-1">
-            <a href="/" className="-m-1.5 p-1.5 flex items-center gap-x-5">
+            <Link href="/" className="-m-1.5 p-1.5 flex items-center gap-x-5">
               <Image
                 src={scrolled ? darkLogo : lightLogo}
                 alt="school logo"
@@ -62,7 +62,7 @@ export default function Navbar() {
                 height={70}
                 width={150}
               />
-            </a>
+            </Link>
           </div>
           <div className="hidden md:flex lg:gap-x-12">
             {navLinks.map((link, index) => {
