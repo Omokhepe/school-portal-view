@@ -16,7 +16,7 @@ const ProgramSection = () => {
   }, []);
 
   return (
-    <section className="bg-amber-50 md:py-20 py-8">
+    <section className="bg-amber-50 md:py-15 py-8">
       <div className="max-w-screen-xl mx-auto px-6 text-center">
         <h2 className="text-2xl md:text-4xl font-bold text-gray-800 mt-6 mb-3 md:mb-10">
           Our Programs

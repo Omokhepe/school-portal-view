@@ -7,15 +7,15 @@ const VisionSection = () => {
     <section className="py-10">
       <div className="max-w-6xl mx-auto px-6 space-y-10">
         {/* ABOUT INTRO */}
-        <div className="text-center max-w-3xl mx-auto">
-          {/*<h1 className="text-4xl font-bold mb-6">About Our School</h1>*/}
-          <p className="text-gray-600 text-lg leading-relaxed">
-            Zoe Seeds School is committed to nurturing well-rounded learners
-            through quality education, strong values, and purposeful character
-            development. We believe every child has the potential to lead,
-            create impact, and thrive.
-          </p>
-        </div>
+        {/*<div className="text-center max-w-3xl mx-auto">*/}
+        {/*  /!*<h1 className="text-4xl font-bold mb-6">About Our School</h1>*!/*/}
+        {/*  <p className="text-gray-600 text-lg leading-relaxed">*/}
+        {/*    Zoe Seeds School is committed to nurturing well-rounded learners*/}
+        {/*    through quality education, strong values, and purposeful character*/}
+        {/*    development. We believe every child has the potential to lead,*/}
+        {/*    create impact, and thrive.*/}
+        {/*  </p>*/}
+        {/*</div>*/}
 
         {/* VISION & MISSION */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">

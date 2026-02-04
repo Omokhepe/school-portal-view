@@ -2,6 +2,8 @@ import React from "react";
 import Navbar from "@components/Navbar";
 import VisionSection from "../../sections/visionSection";
 import Footer from "@components/footer";
+import PrincipalsNote from "@components/principalNote";
+import AboutIntro from "@components/aboutIntro";
 
 const Page = () => {
   return (
@@ -20,7 +22,9 @@ const Page = () => {
           </div>
         </div>
       </section>
+      <AboutIntro />
       <VisionSection />
+      <PrincipalsNote />
       <Footer />
     </div>
   );

@@ -45,7 +45,7 @@ export default function Navbar() {
       style={{ backgroundColor: bg, height, boxShadow: shadow }}
       className="fixed inset-x-0 top-0 z-50 bg-transparent rounded-0 py-6 md:pb-25"
     >
-      <div className="px-4 sm:py-4 sm:px-6 lg:px-8">
+      <div className="px-4 sm:py-4 sm:px-6 lg:px-25">
         <div className="flex justify-between items-center h-16">
           {/* Logo + nav items */}
           <div className="flex lg:flex-1">
@@ -73,8 +73,7 @@ export default function Navbar() {
                   <Link
                     key={index}
                     href={link.href}
-                    // className={`transition-colors ${isActive ? 'text-primary font-semibold' : 'hover:text-primary-hover text-white'}`}
-                    className={`transition-colors ${scrolled ? "text-greyGreen" : "text-amber-50"} text-lg font-semibold 'hover:text-primary-hover text-white'}`}
+                    className={`transition-colors ${scrolled ? "text-greyGreen" : "text-amber-50"} text-sm font-semibold hover:text-yellow-900 text-white}`}
                   >
                     {link.label.toUpperCase()}
                   </Link>

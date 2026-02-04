@@ -16,6 +16,10 @@ import img2 from "@assets/images/2.jpg";
 import img3 from "@assets/images/3.jpg";
 import img4 from "@assets/images/4.jpg";
 import img5 from "@assets/images/5.jpg";
+import heroSec1 from "@assets/images/heroBg.png";
+import heroSec2 from "@assets/images/heroBg11.png";
+import heroSec3 from "@assets/images/heroBg3.png";
+import heroSec4 from "@assets/images/heroBg4.png";
 
 export const navLinks = [
   { href: "/", label: "Home" },
@@ -302,6 +306,15 @@ export const imagesFile = [
   { id: 3, src: img3, alt: "School environment" },
   { id: 4, src: img4, alt: "Outdoor learning" },
   { id: 5, src: img5, alt: "Creative session" },
+  // { id: 6, src: "/gallery/6.jpg", alt: "Group collaboration" },
+];
+
+export const heroImagesFile = [
+  // { id: 1, src: { img1 }, alt: "Students learning" },
+  { id: 2, src: heroSec1, alt: "Classroom activity" },
+  { id: 3, src: heroSec2, alt: "School environment" },
+  { id: 4, src: heroSec3, alt: "Outdoor learning" },
+  { id: 5, src: heroSec4, alt: "Creative session" },
   // { id: 6, src: "/gallery/6.jpg", alt: "Group collaboration" },
 ];
 

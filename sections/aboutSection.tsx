@@ -1,5 +1,6 @@
 import React from "react";
 import ReviewCarousel from "./reviewCarousel";
+import { reviews } from "../constant/data";
 
 const AboutSection = () => {
   return (

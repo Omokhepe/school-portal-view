@@ -16,7 +16,7 @@ export default function CoreValuesGrid() {
   }, []);
 
   return (
-    <section className="py-2">
+    <section className=" py-2">
       <div className="max-w-6xl mx-auto px-6">
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-5 md:mb-12">
           Our Core Values
